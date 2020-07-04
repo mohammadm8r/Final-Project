@@ -40,7 +40,8 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
-
+// import Calendar from "react-material-ui-calendar";
+import Info from './Info.js';
 
 
 import InsertChartIcon from "@material-ui/icons/InsertChart";
@@ -156,23 +157,47 @@ const useStyles = makeStyles((theme) => ({
         transform: 'scale(0.8)',
       },
       pos: {
-        marginBottom: 12,
         fontFamily: "Shabnam",
+        alignItems: 'center', 
+        justifyContent: 'center',
       },
       cardCont: {
           display: 'flex',
-          flexDirection: 'row'
+          flexDirection: 'row',
+          paddingBottom: '1px',
+
       },
       details: {
           fontFamily: "Shabnam",
-          fontSize: '24',
-      }
+          fontSize: 15,
+          paddingLeft: '5%',
+          fontWeight: 'Bold',
+      },
+      paper: {
+        padding: theme.spacing(2),
+        display: "flex",
+        overflow: "auto",
+        flexDirection: "column"
+      },
+      fixedHeight: {
+        height: 240
+      },
+    appBarSpacer: theme.mixins.toolbar,
+    contentt: {
+        flexGrow: 1,
+        height: "100vh",
+        overflow: "auto",
+    },
+    container: {
+        paddingTop: theme.spacing(4),
+        paddingBottom: theme.spacing(4),
+        paddingRight: theme.spacing(20),
+    },
   }));
 
 export default function Dashboard() {
   const classes = useStyles();
-//   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-const bull = <span className={classes.bullet}>•</span>;
+  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
 
   return (
@@ -236,93 +261,62 @@ const bull = <span className={classes.bullet}>•</span>;
                 <Card className={classes.card}>
                     <CardContent className={classes.cardCont}>
                         <Typography variant="h5" component="h2" className={classes.details}>
-                        شماره دانشجویی
+                        شماره دانشجویی:
                         </Typography>
                         <Typography className={classes.pos} color="textSecondary">
                         ۹۴۳۱۰۴۰
                         </Typography>
-                        
                     </CardContent>
-                    <CardActions>
-                        <Button size="small" className={classes.pos}>اطلاعات بیشتر</Button>
+                    <CardContent className={classes.cardCont}>
+                        <Typography variant="h5" component="h2" className={classes.details}>
+                        نیمسال:
+                        </Typography>
+                        <Typography className={classes.pos} color="textSecondary">
+                        دوم-۹۸
+                        </Typography>
+                    </CardContent>
+                    <CardContent className={classes.cardCont}>
+                        <Typography variant="h5" component="h2" className={classes.details}>
+                        تعداد واحد این ترم:
+                        </Typography>
+                        <Typography className={classes.pos} color="textSecondary">
+                        ۱۸
+                        </Typography>
+                    </CardContent>
+                    <CardActions dir="ltr">
+                        <Button size="small" className={classes.pos}>...اطلاعات بیشتر</Button>
                     </CardActions>
                 </Card>
             </Drawer>
         </StylesProvider>
         
-      <main className={classes.content}>
+      <main className={classes.contentt}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={5}>
-            {/* <Grid item xs={12} md={4} lg={3}>
-              <Paper className={fixedHeightPaper}>
-                <React.Fragment>
-                  <Typography color="textSecondary" className={classes.depositContext}>
-                    <SchoolIcon />
-                  </Typography>
-                  <div>
-                    <Link color="primary" href="#" onClick={preventDefault} className = {classes.font}>
-                      مشاهده وضعیت حضور و غیاب
-                    </Link>
-                  </div>
-                </React.Fragment>
-              </Paper>
-            </Grid> */}
-            {/* <Grid item xs={12} md={6} lg={6}>
-              <DatePicker
-                handleGetDate={value => {
-                  console.log(value);
-                }}
-              />
-            </Grid>{" "} */}
-            {/* <Grid item xs={12} md={6} lg={6}>
-              <Paper className={fixedHeightPaper}>
-                <React.Fragment>
-                  <Typography
-                    color="textSecondary"
-                    className={classes.depositContext}
-                  >
-                    <InsertChartIcon className={classes.size} />
-                  </Typography>
-                  <div>
-                    <Link
-                      color="primary"
-                      href="#"
-                      onClick={preventDefault}
-                      className={classes.font}
-                    >
-                      اصلاح وضعیت حضور و غیاب
-                    </Link>
-                  </div>
-                </React.Fragment>
-              </Paper>
+            <Grid item xs={6}>
+                <Card className={classes.card}>
+                    <Paper className={classes.paper}>
+                        <Info />
+                    </Paper>
+                </Card>
             </Grid>
-            <Grid item xs={12} md={6} lg={6}>
-              <Paper className={fixedHeightPaper}>
-                <Typography
-                  color="textSecondary"
-                  className={classes.depositContext}
-                >
-                  <ScheduleIcon className={classes.size} />
-                </Typography>
-                <div>
-                  <Link
-                    color="primary"
-                    href="#"
-                    onClick={preventDefault}
-                    className={classes.font}
-                  >
-                    کلاس‌های من
-                  </Link>
-                </div>
-              </Paper>
-            </Grid> */}
-            {/* Recent Orders */}
-            <Grid item xs={12}>
-              {/* <Paper className={classes.paper}>
-                <Info />
-              </Paper> */}
+            <Grid item xs={6}>
+                <Card className={classes.card}>
+                    <Paper className={classes.paper}>
+                        تقویم
+                    </Paper>
+                </Card>
             </Grid>
+            {/* <Calendar 
+            generalStyle={{
+                maxWidth: "100%",
+                margin: "0 auto",
+                backgroundColor: "rgba(0,0,0,1)",
+                height: "100%",
+                overflow: "auto"
+              }}
+              /> */}
           </Grid>
         </Container>
       </main>
