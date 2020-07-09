@@ -59,13 +59,20 @@ function preventDefault(event) {
 
 const useStyles = makeStyles((theme) => ({
     card: {
-        margin:'7%',
+        margin:'10px',
         minWidth: 150,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: blue[100],
     },
-
+    infoCard: {
+        margin:'10px',
+        minWidth: 150,
+        width: "500px",
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginLeft: '20px',
+    },
     appBar: {
         zIndex: theme.zIndex.drawer + 1,
       },
@@ -177,7 +184,7 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(2),
         display: "flex",
         overflow: "auto",
-        flexDirection: "column"
+        flexDirection: "column",
       },
       fixedHeight: {
         height: 240
@@ -191,7 +198,8 @@ const useStyles = makeStyles((theme) => ({
     container: {
         paddingTop: theme.spacing(4),
         paddingBottom: theme.spacing(4),
-        paddingRight: theme.spacing(20),
+        paddingRight: theme.spacing(30),
+        // paddingLeft: theme.spacing(30),
     },
   }));
 
@@ -293,16 +301,16 @@ export default function Dashboard() {
       <main className={classes.contentt}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={5}>
+          <Grid container spacing={1}>
             <Grid item xs={6}>
-                <Card className={classes.card}>
+                <Card className={classes.infoCard}>
                     <Paper className={classes.paper}>
                         <Info />
                     </Paper>
                 </Card>
             </Grid>
             <Grid item xs={6}>
-                <Card className={classes.card}>
+                <Card className={classes.infoCard}>
                     <Paper className={classes.paper}>
                         تقویم
                     </Paper>
