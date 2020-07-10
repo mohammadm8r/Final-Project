@@ -38,6 +38,8 @@ import Info from "./Info.js";
 import Header from "./components/header";
 import InsertChartIcon from "@material-ui/icons/InsertChart";
 import ScheduleIcon from "@material-ui/icons/Schedule";
+import Demo from "./components/calendar";
+import CustomCalendar from "./components/calendar";
 
 const drawerWidth = 240;
 
@@ -283,7 +285,7 @@ export default function Dashboard() {
 						</Grid>
 						<Grid item xs={6}>
 							<Card className={classes.infoCard}>
-								<Calendar />
+								<CustomCalendar />
 							</Card>
 						</Grid>
 					</Grid>
