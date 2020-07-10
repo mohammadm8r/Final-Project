@@ -3,40 +3,28 @@ import { fade, makeStyles } from "@material-ui/core/styles";
 import { create } from "jss";
 import rtl from "jss-rtl";
 import { StylesProvider, jssPreset } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import Drawer from "@material-ui/core/Drawer";
 import Toolbar from "@material-ui/core/Toolbar";
 import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
-import Container from "@material-ui/core/Container";
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
-import Link from "@material-ui/core/Link";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import SchoolIcon from "@material-ui/icons/School";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
 import Avatar from "@material-ui/core/Avatar";
-import MenuIcon from "@material-ui/icons/Menu";
-import SearchIcon from "@material-ui/icons/Search";
-import AccountCircle from "@material-ui/icons/AccountCircle";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MoreIcon from "@material-ui/icons/MoreVert";
 import { pink, blue } from "@material-ui/core/colors";
 import Profile from "../Profile.jpg";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
-import Info from "./Info.js";
-import InsertChartIcon from "@material-ui/icons/InsertChart";
-import ScheduleIcon from "@material-ui/icons/Schedule";
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const drawerWidth = 240;
+
 
 const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
 
@@ -187,6 +175,16 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SideBar(props) {
     const classes = useStyles();
+    const [open, setOpen] = React.useState(false);
+    
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
 
 	return (
 		<StylesProvider jss={jss}>
@@ -251,9 +249,27 @@ export default function SideBar(props) {
                     </Typography>
                 </CardContent>
                 <CardActions dir="ltr">
-                    <Button size="small" className={classes.pos}>
+                    <Button size="small" className={classes.pos} variant="outlined" color="primary" onClick={handleClickOpen}>
                         ...اطلاعات بیشتر
                     </Button>
+                    <Dialog
+                        open={open}
+                        onClose={handleClose}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                    >
+                        {/* <DialogTitle id="alert-dialog-title">{"اطلاعات تکمیلی"}</DialogTitle> */}
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description" style={{fontFamily: "Shabnam"}}>
+                                شما محمد رضایی دانشجوی ترم ۵ هستید، گفتم در جریان باشی
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                        <Button onClick={handleClose} color="primary" autoFocus style={{fontFamily: "Shabnam"}}>
+                            بستن
+                        </Button>
+                        </DialogActions>
+                    </Dialog>
                 </CardActions>
             </Card>
         </Drawer>

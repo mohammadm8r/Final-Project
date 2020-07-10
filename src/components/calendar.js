@@ -23,7 +23,7 @@ const defaultCalendarValue = now.clone();
 defaultCalendarValue.add(-1, "month");
 
 function onSelect(value) {
-	console.log("select", value.format(format));
+	
 }
 
 class CustomCalendar extends React.Component {
@@ -48,7 +48,7 @@ class CustomCalendar extends React.Component {
 					defaultValue={now}
 					locale={enUS}
 				/>
-				<FullCalendar
+				{/* <FullCalendar
 					style={{ margin: 10 }}
 					Select={Select}
 					fullscreen
@@ -57,7 +57,7 @@ class CustomCalendar extends React.Component {
 					type={this.state.type}
 					onTypeChange={this.onTypeChange}
 					locale={enUS}
-				/>
+				/> */}
 			</div>
 		);
 	}

@@ -1,7 +1,6 @@
 import React , { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
-import Dashboard from "./Dashboard.js"
+import StuDashboard from "./StudentDashboard.js"
 
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
@@ -32,7 +31,7 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
-          <Route exact path="/" component={Dashboard} />
+          <Route exact path="/" component={StuDashboard} />
         </div>
       </Router>
     )
