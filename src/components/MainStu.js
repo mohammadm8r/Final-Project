@@ -36,7 +36,8 @@ import Button from "@material-ui/core/Button";
 import Info from "./Info.js";
 import InsertChartIcon from "@material-ui/icons/InsertChart";
 import ScheduleIcon from "@material-ui/icons/Schedule";
-import Calendar from "rc-calendar";
+// import Calendar from "rc-calendar";
+import Demo from "./calendar";
 
 const drawerWidth = 240;
 
@@ -204,7 +205,7 @@ export default function MainPage(props) {
                     </Grid>
                     <Grid item xs={6}>
                         <Card className={classes.infoCard}>
-                            <Calendar />
+                            <Demo />
                         </Card>
                     </Grid>
                 </Grid>
