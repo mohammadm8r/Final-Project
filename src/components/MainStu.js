@@ -1,5 +1,5 @@
+
 import React from "react";
-import clsx from "clsx";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import { create } from "jss";
 import rtl from "jss-rtl";
@@ -28,25 +28,19 @@ import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import { pink, blue } from "@material-ui/core/colors";
-import Profile from "./Profile.jpg";
+import Profile from "../Profile.jpg";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
-import Info from "./components/Info.js";
-import Header from "./components/header";
-import SideBar from "./components/Drawer";
-import MainPage from "./components/MainStu";
+import Info from "./Info.js";
 import InsertChartIcon from "@material-ui/icons/InsertChart";
 import ScheduleIcon from "@material-ui/icons/Schedule";
+import Calendar from "rc-calendar";
 
 const drawerWidth = 240;
 
 const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
-
-function preventDefault(event) {
-	event.preventDefault();
-}
 
 const useStyles = makeStyles((theme) => ({
 	card: {
@@ -193,15 +187,30 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default function Dashboard() {
+export default function MainPage(props) {
 	const classes = useStyles();
 
 	return (
-		<div className={classes.root}>
-			<CssBaseline />
-			<Header />
-			<SideBar />
-			<MainPage />
-		</div>
+        <main className={classes.contentt}>
+            <div className={classes.appBarSpacer} />
+            <Container maxWidth="lg" className={classes.container}>
+                <Grid container spacing={1}>
+                    <Grid item xs={6}>
+                        <Card className={classes.infoCard}>
+                            <Paper className={classes.paper}>
+                                <Info />
+                            </Paper>
+                        </Card>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Card className={classes.infoCard}>
+                            <Calendar />
+                        </Card>
+                    </Grid>
+                </Grid>
+            </Container>
+        </main>
 	);
 }
+
+

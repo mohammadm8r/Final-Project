@@ -1,5 +1,4 @@
 import React from "react";
-import clsx from "clsx";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import { create } from "jss";
 import rtl from "jss-rtl";
@@ -28,25 +27,18 @@ import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import { pink, blue } from "@material-ui/core/colors";
-import Profile from "./Profile.jpg";
+import Profile from "../Profile.jpg";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
-import Info from "./components/Info.js";
-import Header from "./components/header";
-import SideBar from "./components/Drawer";
-import MainPage from "./components/MainStu";
+import Info from "./Info.js";
 import InsertChartIcon from "@material-ui/icons/InsertChart";
 import ScheduleIcon from "@material-ui/icons/Schedule";
 
 const drawerWidth = 240;
 
 const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
-
-function preventDefault(event) {
-	event.preventDefault();
-}
 
 const useStyles = makeStyles((theme) => ({
 	card: {
@@ -193,15 +185,79 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default function Dashboard() {
-	const classes = useStyles();
+export default function SideBar(props) {
+    const classes = useStyles();
 
 	return (
-		<div className={classes.root}>
-			<CssBaseline />
-			<Header />
-			<SideBar />
-			<MainPage />
-		</div>
+		<StylesProvider jss={jss}>
+        <Drawer
+            anchor="right"
+            className={classes.drawer}
+            variant="permanent"
+            classes={{
+                paper: classes.drawerPaper,
+            }}
+        >
+            <Toolbar />
+            <div className={classes.drawerContainer}>
+                <List>
+                    <ListItem className={classes.sidebar}>
+                        <ListItemIcon>
+                            <Avatar
+                                alt="Mohammad Rezaei"
+                                src={Profile}
+                                className={classes.large}
+                            />
+                        </ListItemIcon>
+                    </ListItem>
+                </List>
+            </div>
+            <Divider />
+            <Card className={classes.card}>
+                <CardContent className={classes.cardCont}>
+                    <Typography
+                        variant="h5"
+                        component="h2"
+                        className={classes.details}
+                    >
+                        شماره دانشجویی:
+                    </Typography>
+                    <Typography className={classes.pos} color="textSecondary">
+                        ۹۴۳۱۰۴۰
+                    </Typography>
+                </CardContent>
+                <CardContent className={classes.cardCont}>
+                    <Typography
+                        variant="h5"
+                        component="h2"
+                        className={classes.details}
+                    >
+                        نیمسال:
+                    </Typography>
+                    <Typography className={classes.pos} color="textSecondary">
+                        دوم-۹۸
+                    </Typography>
+                </CardContent>
+                <CardContent className={classes.cardCont}>
+                    <Typography
+                        variant="h5"
+                        component="h2"
+                        className={classes.details}
+                    >
+                        تعداد واحد این ترم:
+                    </Typography>
+                    <Typography className={classes.pos} color="textSecondary">
+                        ۱۸
+                    </Typography>
+                </CardContent>
+                <CardActions dir="ltr">
+                    <Button size="small" className={classes.pos}>
+                        ...اطلاعات بیشتر
+                    </Button>
+                </CardActions>
+            </Card>
+        </Drawer>
+    </StylesProvider>
 	);
 }
+
