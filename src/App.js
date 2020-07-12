@@ -2,6 +2,7 @@ import React , { Component } from 'react';
 import './App.css';
 import StuDashboard from "./StudentDashboard.js"
 import MasDashboard from "./MasterDashboard.js"
+import classes from "./components/MasClasses.js"
 
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
@@ -32,7 +33,7 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
-          <Route exact path="/" component={MasDashboard} />
+          <Route exact path="/" component={classes} />
         </div>
       </Router>
     )
