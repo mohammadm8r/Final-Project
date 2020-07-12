@@ -1,9 +1,9 @@
 import React from "react";
 import CssBaseline from "@material-ui/core/CssBaseline";
 
-import Header from "./components/header";
-import SideBar from "./components/Drawer";
-import MainPage from "./components/MainStu";
+import Header from "../Global Components/header";
+import SideBar from "./Master Components/MasDrawer";
+import MainPage from "./Master Components/MainMaster";
 
 
 export default function Dashboard() {

@@ -12,7 +12,7 @@ import Avatar from "@material-ui/core/Avatar";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import { pink, blue } from "@material-ui/core/colors";
-import Profile from "../Profile.jpg";
+import Profile from "../../Profile.jpg";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";

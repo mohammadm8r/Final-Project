@@ -6,7 +6,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Title from './Title';
+import Title from '../../Global Components/Title';
 
 import Button from "@material-ui/core/Button";
 import Dialog from '@material-ui/core/Dialog';
@@ -14,7 +14,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 
-import Demo from './calendar'
+import Demo from '../../Global Components/calendar'
 
 // Generate Order Data
 function createData(id, date, status, eslah) {
@@ -50,10 +50,10 @@ export default function Absense() {
     };
   return (
     <React.Fragment>
-      <Title style={{ textAlign: 'center' }}>لیست دانشجویان</Title>
+      <Title style={{ textAlign: 'center' , alignItems: 'center'}}>لیست دانشجویان</Title>
       <Table size="small">
         <TableHead>
-          <TableRow>
+          <TableRow style={{alignItems: 'center'}}>
             <TableCell className={classes.font} style={{ textAlign: 'center', fontWeight:'bold'}}>نام دانشجو</TableCell>
             <TableCell className={classes.font} style={{ textAlign: 'center', fontWeight:'bold' }}>تعداد غیبت</TableCell>
             <TableCell className={classes.font} style={{ textAlign: 'center', fontWeight:'bold' }}>مشاهده غیبت‌های روی تقویم</TableCell>

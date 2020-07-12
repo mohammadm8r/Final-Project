@@ -1,8 +1,8 @@
 import React , { Component } from 'react';
 import './App.css';
-import StuDashboard from "./StudentDashboard.js"
-import MasDashboard from "./MasterDashboard.js"
-import classes from "./components/MasClasses.js"
+import StuDashboard from "./Student/StudentDashboard.js"
+import MasDashboard from "./Master/MasterDashboard.js"
+import classes from "./Master/Master Components/MasClasses.js"
 
 import { BrowserRouter as Router, Route } from "react-router-dom";
 

@@ -28,16 +28,15 @@ import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import { pink, blue } from "@material-ui/core/colors";
-import Profile from "../Profile.jpg";
+// import Profile from "../Profile.jpg";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
-import Info from "./Info.js";
+import Info from "../../Student/Student Components/Info.js";
 import InsertChartIcon from "@material-ui/icons/InsertChart";
 import ScheduleIcon from "@material-ui/icons/Schedule";
-// import Calendar from "rc-calendar";
-import Demo from "./calendar";
+import Demo from "../../Global Components/calendar";
 
 const drawerWidth = 240;
 
@@ -54,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
 	infoCard: {
 		margin: "10px",
 		minWidth: 150,
-		width: "500px",
+		// width: "500px",
 		alignItems: "center",
 		justifyContent: "center",
 		marginLeft: "20px",
@@ -195,17 +194,12 @@ export default function MainPage(props) {
         <main className={classes.contentt}>
             <div className={classes.appBarSpacer} />
             <Container maxWidth="lg" className={classes.container}>
-                <Grid container spacing={1}>
-                    <Grid item xs={6}>
+                <Grid container spacing={5}>
+                    <Grid item xs={12}>
                         <Card className={classes.infoCard}>
                             <Paper className={classes.paper}>
                                 <Info />
                             </Paper>
-                        </Card>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Card className={classes.infoCard}>
-                            <Demo />
                         </Card>
                     </Grid>
                 </Grid>
