@@ -23,7 +23,7 @@ const defaultCalendarValue = now.clone();
 defaultCalendarValue.add(-1, "month");
 
 function onSelect(value) {
-	
+	console.log("select" + value.date())
 }
 
 class CustomCalendar extends React.Component {

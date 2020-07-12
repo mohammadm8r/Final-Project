@@ -1,6 +1,7 @@
 import React , { Component } from 'react';
 import './App.css';
 import StuDashboard from "./StudentDashboard.js"
+import MasDashboard from "./MasterDashboard.js"
 
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
@@ -31,7 +32,7 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
-          <Route exact path="/" component={StuDashboard} />
+          <Route exact path="/" component={MasDashboard} />
         </div>
       </Router>
     )
