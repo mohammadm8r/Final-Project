@@ -3,6 +3,7 @@ import './App.css';
 import StuDashboard from "./Student/StudentDashboard.js"
 import MasDashboard from "./Master/MasterDashboard.js"
 import classes from "./Master/Master Components/MasClasses.js"
+import SignIn from "./Registration/LoginPage"
 
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
@@ -33,7 +34,7 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
-          <Route exact path="/" component={classes} />
+          <Route exact path="/" component={SignIn} />
         </div>
       </Router>
     )
