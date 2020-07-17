@@ -6,13 +6,21 @@ import SideBar from "./Student Components/Drawer";
 import MainPage from "./Student Components/MainStu";
 
 
-export default function Dashboard() {
-	return (
-		<div>
-			<CssBaseline />
-			<Header />
-			<SideBar />
-			<MainPage />
-		</div>
-	);
+class Dashboard extends React.Component {
+	constructor (props) {
+		super(props);
+		console.log(props.location)
+	}
+	render () {
+		return (
+			<div>
+				<CssBaseline />
+				<Header />
+				<SideBar />
+				<MainPage />
+			</div>
+		);
+	}
 }
+
+export default Dashboard;
