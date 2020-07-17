@@ -5,7 +5,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
@@ -21,6 +20,13 @@ import TopHeader from './Login Components/LoginHeader';
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
+import StuDashboard from "../Student/StudentDashboard.js"
+
+
+import {Link} from 'react-router-dom';
+
+// import { Link as RouterLink } from 'react-router-dom';
+// import Link from '@material-ui/core/Link';
 
 const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
 
@@ -69,6 +75,15 @@ const useStyles = makeStyles(theme => ({
 
 function SignIn() {
     const classes = useStyles();
+
+    this.setState={
+		username: "",
+		password: ""
+    }
+    this.onChangeUsername = this.onChangeUsername.bind(this);
+    this.onchangePassword = this.onchangePassword.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+
     return (
         <div>
             <TopHeader />
@@ -106,7 +121,6 @@ function SignIn() {
                     style={{direction: 'rtl'}}
                     anchor='right'
                     label={<Typography type="body2" style={{ fontFamily: 'Shabnam', textAlign: 'right'}}>آدرس ایمیل</Typography>}
-
                     />
                     <TextField
                     disableTypography
@@ -120,33 +134,42 @@ function SignIn() {
                     id="password"
                     autoComplete="current-password"
                     />
-                    <FormControlLabel
+                    {/* <FormControlLabel
                     disableTypography
                     control={<Checkbox value="remember" color="primary" />}
                     label={<Typography type="body2" style={{ fontFamily: 'Shabnam', textAlign: 'right'}}>مرا به خاطرت نگه دار</Typography>}
-                    />
+                    /> */}
                     <Grid container spacing={1}>
                         <Grid item xs={6}>
-                            <Button
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                color="primary"
-                                className={classes.submit && classes.font}
+                            <Link to={{
+                                pathname:"/StuDashboard",
+                                data: {username: this.username,
+                                password: this.password}
+                                }} 
+                            style={{textDecoration: 'none'}}>
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    color="primary"
+                                    className={classes.submit && classes.font}
                                 >
-                                ورود دانشجویان
-                            </Button>
+                                    ورود دانشجویان
+                                </Button>
+                            </Link>
                         </Grid>
                         <Grid item xs={6}>
-                            <Button
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                color="primary"
-                                className={classes.submit && classes.font}
-                                >
-                                ورود اساتید
-                            </Button>
+                            <Link to="MasDashboard" style={{textDecoration: 'none'}}>
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    color="primary"
+                                    className={classes.submit && classes.font}
+                                    >
+                                    ورود اساتید
+                                </Button>
+                            </Link>
                         </Grid>
                     </Grid>
                     

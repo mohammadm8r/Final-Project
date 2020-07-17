@@ -2,10 +2,14 @@ import React , { Component } from 'react';
 import './App.css';
 import StuDashboard from "./Student/StudentDashboard.js"
 import MasDashboard from "./Master/MasterDashboard.js"
-import classes from "./Master/Master Components/MasClasses.js"
+import AbsensePanel from "./Master/Master Components/MasClasses.js"
 import SignIn from "./Registration/LoginPage"
 
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import {
+   BrowserRouter as Router,
+   Route,
+   Switch
+  } from "react-router-dom";
 
 // function App() {
 //   return (
@@ -33,10 +37,16 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <div className="App">
-          <Route exact path="/" component={SignIn} />
+        <div>
+          <Switch>
+            <Route exact path="/" component={SignIn} />
+            <Route exact path="/MasDashboard" component={MasDashboard} />
+            <Route exact path="/StuDashboard" component={StuDashboard} />
+            <Route exact path="/MasClasses" component={AbsensePanel} />
+          </Switch>
         </div>
       </Router>
+    
     )
   }
 }

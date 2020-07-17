@@ -190,6 +190,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function MainPage(props) {
 	const classes = useStyles();
+	
 
 	return (
         <main className={classes.contentt}>

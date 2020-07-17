@@ -1,5 +1,5 @@
 import React from 'react';
-import Link from '@material-ui/core/Link';
+// import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -10,7 +10,7 @@ import Title from '../../Global Components/Title';
 import { create } from 'jss';
 import rtl from 'jss-rtl';
 import { StylesProvider, jssPreset } from '@material-ui/core/styles';
-
+import {Link} from 'react-router-dom';
 // Generate Order Data
 function createData(id, num_of_absense, num_of_classes, name_of_class, code_of_class) {
   return { id, num_of_absense, num_of_classes, name_of_class, code_of_class};
@@ -54,7 +54,7 @@ export default function Info() {
           {rows.map(row => (
             <TableRow key={row.id}>
               <TableCell className={classes.font} style={{ textAlign: 'center' }}>{row.code_of_class}</TableCell>
-              <TableCell className={classes.font} style={{ textAlign: 'center' }}><Link style={{cursor:'pointer'}}>{row.name_of_class}</Link></TableCell>
+              <TableCell className={classes.font} style={{ textAlign: 'center' }}><Link style={{textDecoration: 'none', cursor:'pointer'}} to="/MasClasses">{row.name_of_class}</Link></TableCell>
               <TableCell className={classes.font} style={{ textAlign: 'center' }}>{row.num_of_classes}</TableCell>
               <TableCell className={classes.font} style={{ textAlign: 'center' }}>{row.num_of_absense}</TableCell>
             </TableRow>

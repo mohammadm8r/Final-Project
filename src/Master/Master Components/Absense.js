@@ -17,14 +17,14 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import Demo from '../../Global Components/calendar'
 
 // Generate Order Data
-function createData(id, date, status, eslah) {
-  return { id, date, status, eslah};
+function createData(id, date, gheibatha, status, taghvim) {
+  return { id, date, gheibatha, status, taghvim};
 }
 
 const rows = [
-  createData(0, 'رضا قیداری', '۲/۳۲', 'مشاهده تقویم'),
-  createData(1, 'مرتضی کامرانی‌فرد', '۵/۳۲', 'مشاهده تقویم'),
-  createData(2, 'حمید عسکری', '۳/۳۲', 'مشاهده تقویم'),
+  createData(0, 'رضا قیداری', '۲/۳۲', 'درخواست', 'مشاهده تقویم'),
+  createData(1, 'مرتضی کامرانی‌فرد', '۵/۳۲', 'درخواست', 'مشاهده تقویم'),
+  createData(2, 'حمید عسکری', '۳/۳۲', 'درخواست', 'مشاهده تقویم'),
 ];
 
 function preventDefault(event) {
@@ -56,6 +56,7 @@ export default function Absense() {
           <TableRow style={{alignItems: 'center'}}>
             <TableCell className={classes.font} style={{ textAlign: 'center', fontWeight:'bold'}}>نام دانشجو</TableCell>
             <TableCell className={classes.font} style={{ textAlign: 'center', fontWeight:'bold' }}>تعداد غیبت</TableCell>
+            <TableCell className={classes.font} style={{ textAlign: 'center', fontWeight:'bold' }}>درخواست‌ها</TableCell>
             <TableCell className={classes.font} style={{ textAlign: 'center', fontWeight:'bold' }}>مشاهده غیبت‌های روی تقویم</TableCell>
           </TableRow>
         </TableHead>
@@ -63,9 +64,29 @@ export default function Absense() {
           {rows.map(row => (
             <TableRow key={row.id}>
                 <TableCell className={classes.font} style={{ textAlign: 'center' }}>{row.date}</TableCell>
-                <TableCell className={classes.font} style={{ textAlign: 'center' }}>{row.status}</TableCell>
+                <TableCell className={classes.font} style={{ textAlign: 'center' }}>{row.gheibatha}</TableCell>
                 <TableCell className={classes.font} style={{ textAlign: 'center' }}>
-                    <Button style={{cursor:'pointer', fontFamily: 'Shabnam'}} onClick={handleClickOpen}>{row.eslah}</Button>
+                    <Button style={{cursor:'pointer', fontFamily: 'Shabnam'}} onClick={handleClickOpen}>{row.status}</Button>
+                    <Dialog
+                        open={open}
+                        onClose={handleClose}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                    >
+                        {/* <DialogContent>
+                            <DialogContentText id="alert-dialog-description" style={{fontFamily: "Shabnam"}}>
+                                "هیچ درخواستی ثبت نشده"
+                            </DialogContentText>
+                        </DialogContent> */}
+                        <DialogActions>
+                        <Button onClick={handleClose} color="primary" autoFocus style={{fontFamily: "Shabnam"}}>
+                            بستن
+                        </Button>
+                        </DialogActions>
+                    </Dialog>
+                </TableCell>
+                <TableCell className={classes.font} style={{ textAlign: 'center' }}>
+                    <Button style={{cursor:'pointer', fontFamily: 'Shabnam'}} onClick={handleClickOpen}>{row.taghvim}</Button>
                     <Dialog
                         open={open}
                         onClose={handleClose}
