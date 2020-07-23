@@ -19,115 +19,117 @@ import Demo from '../../Global Components/calendar'
 // Generate Order Data
 
 const useStyles = theme => ({
-    font: {
-        fontFamily: 'Shabnam',
-      },
+  font: {
+    fontFamily: 'Shabnam',
+  },
 });
 
 class Absense extends React.Component {
-  constructor (props){
-		super(props);
-		this.state = {
-      open: false,
-      openStatus: false,
+  constructor(props) {
+    super(props);
+    this.state = {
+      openReq: false,
+      openCal: false,
       rows: []
-		}
-		this.handleClickOpen = this.handleClickOpen.bind(this);
-		this.handleClickStatusOpen = this.handleClickOpen.bind(this);
-    this.handleClose = this.handleClose.bind(this);
-    this.handleCloseStatus = this.handleClose.bind(this);
-    this.createData = this.createData.bind(this);
+    }
 
     this.state.rows.push(
-      this.createData(0, 'رضا قیداری', '۲/۳۲', 'مشاهده درخواست', 'مشاهده تقویم'),
-      this.createData(1, 'مرتضی کامرانی‌فرد', '۵/۳۲', 'مشاهده درخواست', 'مشاهده تقویم'),
-      this.createData(2, 'حمید عسکری', '۳/۳۲', 'مشاهده درخواست', 'مشاهده تقویم'),
+      this.createData(0, 'رضا قیداری', '۲/۳۲', 'درخواست', 'مشاهده تقویم'),
+      this.createData(1, 'مرتضی کامرانی‌فرد', '۵/۳۲', 'درخواست', 'مشاهده تقویم'),
+      this.createData(2, 'حمید عسکری', '۳/۳۲', 'درخواست', 'مشاهده تقویم'),
     );
-	}
 
-	handleClickOpen(event) {
-      this.setState({open: true})
-  }
-	handleClickStatusOpen(event) {
-      this.setState({openStatus: true})
+    this.handleClickOpenReq = this.handleClickOpenReq.bind(this);
+    this.handleClickOpenCal = this.handleClickOpenCal.bind(this);
+    this.handleCloseReq = this.handleCloseReq.bind(this);
+    this.handleCloseCal = this.handleCloseCal.bind(this);
   }
 
-  handleClose(event) {
-    this.setState({open: false})
+  handleClickOpenReq(event) {
+    this.setState({ openReq: true })
+  }
+
+  handleClickOpenCal(event) {
+    this.setState({ openCal: true })
+  }
+
+  handleCloseReq(event) {
+    this.setState({ openReq: false })
   };
-  handleCloseStatus(event) {
-    this.setState({openStatus: false})
+
+  handleCloseCal(event) {
+    this.setState({ openCal: false })
   };
-  
+
   createData(id, date, gheibatha, status, taghvim) {
-    return { id, date, gheibatha, status, taghvim};
+    return { id, date, gheibatha, status, taghvim };
   }
 
   preventDefault(event) {
     event.preventDefault();
   }
-  
-  render(){
-    const {classes} = this.props;
-    
+
+  render() {
+    const { classes } = this.props;
+
     return (
       <React.Fragment>
-        <Title style={{ textAlign: 'center' , alignItems: 'center'}}>لیست دانشجویان</Title>
+        <Title style={{ textAlign: 'center', alignItems: 'center' }}>لیست دانشجویان</Title>
         <Table size="small">
           <TableHead>
-            <TableRow style={{alignItems: 'center'}}>
-              <TableCell className={classes.font} style={{ textAlign: 'center', fontWeight:'bold'}}>نام دانشجو</TableCell>
-              <TableCell className={classes.font} style={{ textAlign: 'center', fontWeight:'bold' }}>تعداد غیبت</TableCell>
-              <TableCell className={classes.font} style={{ textAlign: 'center', fontWeight:'bold' }}>درخواست‌ها</TableCell>
-              <TableCell className={classes.font} style={{ textAlign: 'center', fontWeight:'bold' }}>مشاهده غیبت‌ها روی تقویم</TableCell>
+            <TableRow style={{ alignItems: 'center' }}>
+              <TableCell className={classes.font} style={{ textAlign: 'center', fontWeight: 'bold' }}>نام دانشجو</TableCell>
+              <TableCell className={classes.font} style={{ textAlign: 'center', fontWeight: 'bold' }}>تعداد غیبت</TableCell>
+              <TableCell className={classes.font} style={{ textAlign: 'center', fontWeight: 'bold' }}>درخواست‌ها</TableCell>
+              <TableCell className={classes.font} style={{ textAlign: 'center', fontWeight: 'bold' }}>مشاهده غیبت‌ها روی تقویم</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {this.state.rows.map(row => (
               <TableRow key={row.id}>
-                  <TableCell className={classes.font} style={{ textAlign: 'center' }}>{row.date}</TableCell>
-                  <TableCell className={classes.font} style={{ textAlign: 'center' }}>{row.gheibatha}</TableCell>
-                  <TableCell className={classes.font} style={{ textAlign: 'center' }}>
-                      <Button style={{cursor:'pointer', fontFamily: 'Shabnam'}} onClick={this.handleClickStatusOpen}>{row.status}</Button>
-                      <Dialog
-                          open={this.state.openStatus}
-                          onClose={this.handleCloseStatus}
-                          aria-labelledby="alert-dialog-title"
-                          aria-describedby="alert-dialog-description"
-                      >
-                          <DialogContent>
-                              <DialogContentText id="alert-dialog-description" style={{fontFamily: "Shabnam"}}>
-                                  "هیچ درخواستی ثبت نشده"
+                <TableCell className={classes.font} style={{ textAlign: 'center' }}>{row.date}</TableCell>
+                <TableCell className={classes.font} style={{ textAlign: 'center' }}>{row.gheibatha}</TableCell>
+                <TableCell className={classes.font} style={{ textAlign: 'center' }}>
+                  <Button style={{ cursor: 'pointer', fontFamily: 'Shabnam' }} onClick={this.handleClickOpenReq}>{row.status}</Button>
+                  <Dialog
+                    open={this.state.openReq}
+                    onClose={this.handleCloseReq}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                  >
+                    <DialogContent>
+                      <DialogContentText id="alert-dialog-description" style={{ fontFamily: "Shabnam" }}>
+                        "هیچ درخواستی ثبت نشده"
                               </DialogContentText>
-                          </DialogContent>
-                          <DialogActions>
-                          <Button onClick={this.handleCloseStatus} color="primary" autoFocus style={{fontFamily: "Shabnam"}}>
-                              بستن
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={this.handleCloseReq} color="primary" autoFocus style={{ fontFamily: "Shabnam" }}>
+                        بستن
                           </Button>
-                          </DialogActions>
-                      </Dialog>
-                  </TableCell>
-                  <TableCell className={classes.font} style={{ textAlign: 'center' }}>
-                      <Button style={{cursor:'pointer', fontFamily: 'Shabnam'}} onClick={this.handleClickOpen}>{row.taghvim}</Button>
-                      <Dialog
-                          open={this.state.open}
-                          onClose={this.handleClose}
-                          aria-labelledby="alert-dialog-title"
-                          aria-describedby="alert-dialog-description"
-                      >
-                          <DialogContent>
-                              <DialogContentText id="alert-dialog-description" style={{fontFamily: "Shabnam"}}>
-                                  <Demo />
-                              </DialogContentText>
-                          </DialogContent>
-                          <DialogActions>
-                          <Button onClick={this.handleClose} color="primary" autoFocus style={{fontFamily: "Shabnam"}}>
-                              بستن
+                    </DialogActions>
+                  </Dialog>
+                </TableCell>
+                <TableCell className={classes.font} style={{ textAlign: 'center' }}>
+                  <Button style={{ cursor: 'pointer', fontFamily: 'Shabnam' }} onClick={this.handleClickOpenCal}>{row.taghvim}</Button>
+                  <Dialog
+                    open={this.state.openCal}
+                    onClose={this.handleCloseCal}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                  >
+                    <DialogContent>
+                      <DialogContentText id="alert-dialog-description" style={{ fontFamily: "Shabnam" }}>
+                        <Demo />
+                      </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={this.handleCloseCal} color="primary" autoFocus style={{ fontFamily: "Shabnam" }}>
+                        بستن
                           </Button>
-                          </DialogActions>
-                      </Dialog>
-                  </TableCell>
-                
+                    </DialogActions>
+                  </Dialog>
+                </TableCell>
+
               </TableRow>
             ))}
           </TableBody>
