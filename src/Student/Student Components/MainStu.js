@@ -55,9 +55,10 @@ const useStyles = theme => ({
 	infoCard: {
 		margin: "10px",
 		minWidth: 150,
-		// width: "500px",
+		width: "500px",
 		alignItems: "center",
 		justifyContent: "center",
+		display: 'flex',
 		marginLeft: "20px",
 	},
 	appBar: {

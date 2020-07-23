@@ -29,18 +29,34 @@ class Absense extends React.Component {
 		super(props);
 		this.state = {
       open: false,
+      openStatus: false,
       rows: []
 		}
 		this.handleClickOpen = this.handleClickOpen.bind(this);
-		this.handleClose = this.handleClose.bind(this);
+		this.handleClickStatusOpen = this.handleClickOpen.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+    this.handleCloseStatus = this.handleClose.bind(this);
+    this.createData = this.createData.bind(this);
+
+    this.state.rows.push(
+      this.createData(0, 'رضا قیداری', '۲/۳۲', 'مشاهده درخواست', 'مشاهده تقویم'),
+      this.createData(1, 'مرتضی کامرانی‌فرد', '۵/۳۲', 'مشاهده درخواست', 'مشاهده تقویم'),
+      this.createData(2, 'حمید عسکری', '۳/۳۲', 'مشاهده درخواست', 'مشاهده تقویم'),
+    );
 	}
 
 	handleClickOpen(event) {
-        this.setState({open: true})
-    }
+      this.setState({open: true})
+  }
+	handleClickStatusOpen(event) {
+      this.setState({openStatus: true})
+  }
 
-    handleClose(event) {
-        this.setState({open: false})
+  handleClose(event) {
+    this.setState({open: false})
+  };
+  handleCloseStatus(event) {
+    this.setState({openStatus: false})
   };
   
   createData(id, date, gheibatha, status, taghvim) {
@@ -53,11 +69,7 @@ class Absense extends React.Component {
   
   render(){
     const {classes} = this.props;
-    this.state.rows.push(
-      this.createData(0, 'رضا قیداری', '۲/۳۲', 'مشاهده درخواست', 'مشاهده تقویم'),
-      this.createData(1, 'مرتضی کامرانی‌فرد', '۵/۳۲', 'مشاهده درخواست', 'مشاهده تقویم'),
-      this.createData(2, 'حمید عسکری', '۳/۳۲', 'مشاهده درخواست', 'مشاهده تقویم'),
-    );
+    
     return (
       <React.Fragment>
         <Title style={{ textAlign: 'center' , alignItems: 'center'}}>لیست دانشجویان</Title>
@@ -76,10 +88,10 @@ class Absense extends React.Component {
                   <TableCell className={classes.font} style={{ textAlign: 'center' }}>{row.date}</TableCell>
                   <TableCell className={classes.font} style={{ textAlign: 'center' }}>{row.gheibatha}</TableCell>
                   <TableCell className={classes.font} style={{ textAlign: 'center' }}>
-                      <Button style={{cursor:'pointer', fontFamily: 'Shabnam'}} onClick={this.handleClickOpen}>{row.status}</Button>
+                      <Button style={{cursor:'pointer', fontFamily: 'Shabnam'}} onClick={this.handleClickStatusOpen}>{row.status}</Button>
                       <Dialog
-                          open={this.state.open}
-                          onClose={this.handleClose}
+                          open={this.state.openStatus}
+                          onClose={this.handleCloseStatus}
                           aria-labelledby="alert-dialog-title"
                           aria-describedby="alert-dialog-description"
                       >
@@ -89,7 +101,7 @@ class Absense extends React.Component {
                               </DialogContentText>
                           </DialogContent>
                           <DialogActions>
-                          <Button onClick={this.handleClose} color="primary" autoFocus style={{fontFamily: "Shabnam"}}>
+                          <Button onClick={this.handleCloseStatus} color="primary" autoFocus style={{fontFamily: "Shabnam"}}>
                               بستن
                           </Button>
                           </DialogActions>
