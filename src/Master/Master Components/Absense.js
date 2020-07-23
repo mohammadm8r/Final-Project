@@ -67,7 +67,7 @@ class Absense extends React.Component {
               <TableCell className={classes.font} style={{ textAlign: 'center', fontWeight:'bold'}}>نام دانشجو</TableCell>
               <TableCell className={classes.font} style={{ textAlign: 'center', fontWeight:'bold' }}>تعداد غیبت</TableCell>
               <TableCell className={classes.font} style={{ textAlign: 'center', fontWeight:'bold' }}>درخواست‌ها</TableCell>
-              <TableCell className={classes.font} style={{ textAlign: 'center', fontWeight:'bold' }}>مشاهده غیبت‌های روی تقویم</TableCell>
+              <TableCell className={classes.font} style={{ textAlign: 'center', fontWeight:'bold' }}>مشاهده غیبت‌ها روی تقویم</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

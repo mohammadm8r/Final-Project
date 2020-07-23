@@ -193,8 +193,9 @@ class MainPage extends React.Component {
 	constructor(props){
 		super(props);
 	}
+	
 	render(){
-		const classes = useStyles();
+		const {classes} = this.props;
 
 		return (
 			<main className={classes.contentt}>

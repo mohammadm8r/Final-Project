@@ -7,12 +7,21 @@ import FullCalendar from "rc-calendar/lib/FullCalendar";
 import "rc-select/assets/index.less";
 import Select from "rc-select";
 
-import zhCN from "rc-calendar/lib/locale/zh_CN";
 import enUS from "rc-calendar/lib/locale/en_US";
-
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from "@material-ui/core/Button";
+import ClearIcon from '@material-ui/icons/Clear';
 import moment from "moment";
 import "moment/locale/zh-cn";
 import "moment/locale/en-gb";
+import { red } from "@material-ui/core/colors";
+import Image from 'material-ui-image'
+import ClassPhoto from "../students-in-classroom.jpg";
+
 
 const format = "YYYY-MM-DD";
 
@@ -22,45 +31,80 @@ now.locale("en-gb").utcOffset(0);
 const defaultCalendarValue = now.clone();
 defaultCalendarValue.add(-1, "month");
 
-function onSelect(value) {
-	console.log("select" + value.date())
-}
-
 class CustomCalendar extends React.Component {
-	state = {
-		type: "month",
-	};
+ constructor(props) {
+  super(props);
+  this.state = {
+	dates: [2,4],
+   	open: false
+  };
+  this.handleClose = this.handleClose.bind(this);
+  this.onSelect = this.onSelect.bind(this);
+  this.dateCellRender = this.dateCellRender.bind(this);
+ }
 
-	onTypeChange = (type) => {
-		this.setState({
-			type,
-		});
-	};
+ onSelect(value) {
+  console.log("select" + value.date())
+  if (this.state.dates.includes(value.date()))
+	this.setState({
+	open: true
+	})
+ }
 
-	render() {
-		return (
-			<div style={{ zIndex: 1000, position: "relative" }}>
-				<FullCalendar
-					style={{ margin: 10 }}
-					Select={Select}
-					fullscreen={false}
-					onSelect={onSelect}
-					defaultValue={now}
-					locale={enUS}
-				/>
-				{/* <FullCalendar
-					style={{ margin: 10 }}
-					Select={Select}
-					fullscreen
-					defaultValue={now}
-					onSelect={onSelect}
-					type={this.state.type}
-					onTypeChange={this.onTypeChange}
-					locale={enUS}
-				/> */}
-			</div>
-		);
-	}
+ handleClose() {
+  this.setState({
+   open: false
+  })
+ }
+
+ dateCellRender(value) {
+  console.log(value.date())
+  if (this.state.dates.includes(value.date()))
+   return (
+    <span>
+     <ClearIcon style={{ color: red[500], fontSize: "10pt" }} />{value.date()}
+    </span>
+   )
+  else {
+   return value.date()
+  }
+ }
+
+ render() {
+  return (
+   <div style={{ zIndex: 1000, position: "relative" }}>
+    <FullCalendar
+     style={{ margin: 10 }}
+     Select={Select}
+     fullscreen={false}
+     onSelect={this.onSelect}
+     defaultValue={now}
+     dateCellContentRender={this.dateCellRender}
+     locale={enUS}
+    />
+    <Dialog
+     open={this.state.open}
+     onClose={this.handleClose}
+     aria-labelledby="alert-dialog-title"
+     aria-describedby="alert-dialog-description"
+    >
+     {/* <DialogTitle id="alert-dialog-title">{"Use Google's location service?"}</DialogTitle> */}
+     <DialogContent style={{width: '500px'}}>
+		<Image src={ClassPhoto} />
+     </DialogContent>
+     <DialogActions>
+      <Button onClick={this.handleClose} color="primary">
+       Disagree
+     </Button>
+      <Button onClick={this.handleClose} color="primary" autoFocus>
+       Agree
+     </Button>
+     </DialogActions>
+    </Dialog>
+   </div>
+
+  );
+ }
 }
 
 export default CustomCalendar;

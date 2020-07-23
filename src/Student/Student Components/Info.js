@@ -12,7 +12,12 @@ import rtl from 'jss-rtl';
 import { StylesProvider, jssPreset } from '@material-ui/core/styles';
 import {Link} from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles'
-
+import Button from "@material-ui/core/Button";
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import Demo from '../../Global Components/calendar'
 // Generate Order Data
 
 
@@ -27,10 +32,14 @@ class Info extends React.Component {
     super(props);
     this.state={
       nameClass: this.createData.name_of_class,
-      rows: []
+      rows: [],
+      open: false,
+      Calendrows: []
     }
     this.createData = this.createData.bind(this);
-    this.changeClass = this.changeClass.bind(this);
+    // this.changeClass = this.changeClass.bind(this);
+    this.handleClickOpen = this.handleClickOpen.bind(this);
+		this.handleClose = this.handleClose.bind(this);
   }
 
   createData(id, num_of_absense, num_of_classes, name_of_class, code_of_class) {
@@ -41,9 +50,16 @@ class Info extends React.Component {
     event.preventDefault();
   }
   
-  changeClass(evenet) {
-    console.log(this.state.rows[2])
+  // changeClass(evenet) {
+  //   console.log(this.state.rows[2])
+  // }
+  handleClickOpen(event) {
+    this.setState({open: true})
   }
+
+  handleClose(event) {
+    this.setState({open: false})
+  };
 
   render(){
     const { classes } = this.props;
@@ -71,7 +87,31 @@ class Info extends React.Component {
             {this.state.rows.map(row => (
               <TableRow key={row.id}>
                 <TableCell className={classes.font} style={{ textAlign: 'center' }}>{row.code_of_class}</TableCell>
-                <TableCell className={classes.font} style={{ textAlign: 'center' }} onClick={this.changeClass}><Link style={{textDecoration: 'none', cursor:'pointer'}} to={{pathname:"/MasClasses" , data: this.state.nameClass}}>{row.name_of_class}</Link></TableCell>
+                <TableCell className={classes.font} style={{ textAlign: 'center' }}>
+                  <Button style={{cursor:'pointer', fontFamily: 'Shabnam'}} onClick={this.handleClickOpen}>
+                    {row.name_of_class}
+                  </Button>
+                    <Dialog
+                        open={this.state.open}
+                        onClose={this.handleClose}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                    >
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description" style={{fontFamily: "Shabnam"}}>
+                                <Demo />
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                        <Button onClick={this.handleClose} color="primary" autoFocus style={{fontFamily: "Shabnam"}}>
+                            بستن
+                        </Button>
+                        </DialogActions>
+                    </Dialog>
+                  {/* <Link style={{textDecoration: 'none', cursor:'pointer'}} to={{pathname:"/MasClasses" , data: this.state.nameClass}}>
+                    {row.name_of_class}
+                  </Link> */}
+                </TableCell>
                 <TableCell className={classes.font} style={{ textAlign: 'center' }}>{row.num_of_classes}</TableCell>
                 <TableCell className={classes.font} style={{ textAlign: 'center' }}>{row.num_of_absense}</TableCell>
               </TableRow>

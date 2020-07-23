@@ -33,7 +33,7 @@ import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
-import Info from "../../Student/Student Components/Info.js";
+import MasInfo from "./MasInfo.js";
 import InsertChartIcon from "@material-ui/icons/InsertChart";
 import ScheduleIcon from "@material-ui/icons/Schedule";
 import { withStyles } from '@material-ui/core/styles'
@@ -202,7 +202,7 @@ class MainPage extends React.Component {
 						<Grid item xs={12}>
 							<Card className={classes.infoCard}>
 								<Paper className={classes.paper}>
-									<Info />
+									<MasInfo />
 								</Paper>
 							</Card>
 						</Grid>

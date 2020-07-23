@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^7.2.1",
     "date-fns": "^2.14.0",
     "jss-rtl": "^0.3.0",
+    "material-ui-image": "^3.2.3",
     "rc-calendar": "^9.15.11",
     "rc-select": "^11.0.10",
     "react": "^16.13.1",
