@@ -35,7 +35,6 @@ class CustomCalendar extends React.Component {
  constructor(props) {
   super(props);
   this.state = {
-	dates: [2,4],
    	open: false
   };
   this.handleClose = this.handleClose.bind(this);
@@ -45,7 +44,7 @@ class CustomCalendar extends React.Component {
 
  onSelect(value) {
   console.log("select" + value.date())
-  if (this.state.dates.includes(value.date()))
+  if (value.date() === 2 || value.date() === 4)
 	this.setState({
 	open: true
 	})
@@ -59,7 +58,7 @@ class CustomCalendar extends React.Component {
 
  dateCellRender(value) {
   console.log(value.date())
-  if (this.state.dates.includes(value.date()))
+  if (value.date() === 2 || value.date() === 4)
    return (
     <span>
      <ClearIcon style={{ color: red[500], fontSize: "10pt" }} />{value.date()}
@@ -93,11 +92,11 @@ class CustomCalendar extends React.Component {
 		<Image src={ClassPhoto} />
      </DialogContent>
      <DialogActions>
-      <Button onClick={this.handleClose} color="primary">
-       Disagree
+      <Button onClick={this.handleClose} color="primary" style={{fontFamily: "Shabnam"}}>
+       ثبت درخواست
      </Button>
-      <Button onClick={this.handleClose} color="primary" autoFocus>
-       Agree
+      <Button onClick={this.handleClose} color="primary" autoFocus style={{fontFamily: "Shabnam"}}>
+       لغو
      </Button>
      </DialogActions>
     </Dialog>

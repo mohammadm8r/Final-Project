@@ -55,7 +55,7 @@ const useStyles = theme => ({
 	infoCard: {
 		margin: "10px",
 		minWidth: 150,
-		width: "500px",
+		// width: "500px",
 		alignItems: "center",
 		justifyContent: "center",
 		marginLeft: "20px",
@@ -193,7 +193,7 @@ class MainPage extends React.Component {
 	constructor(props){
 		super(props);
 	}
-	
+
 	render(){
 		const {classes} = this.props;
 

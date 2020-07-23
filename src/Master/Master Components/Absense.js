@@ -54,9 +54,9 @@ class Absense extends React.Component {
   render(){
     const {classes} = this.props;
     this.state.rows.push(
-      this.createData(0, 'رضا قیداری', '۲/۳۲', 'درخواست', 'مشاهده تقویم'),
-      this.createData(1, 'مرتضی کامرانی‌فرد', '۵/۳۲', 'درخواست', 'مشاهده تقویم'),
-      this.createData(2, 'حمید عسکری', '۳/۳۲', 'درخواست', 'مشاهده تقویم'),
+      this.createData(0, 'رضا قیداری', '۲/۳۲', 'مشاهده درخواست', 'مشاهده تقویم'),
+      this.createData(1, 'مرتضی کامرانی‌فرد', '۵/۳۲', 'مشاهده درخواست', 'مشاهده تقویم'),
+      this.createData(2, 'حمید عسکری', '۳/۳۲', 'مشاهده درخواست', 'مشاهده تقویم'),
     );
     return (
       <React.Fragment>
@@ -83,11 +83,11 @@ class Absense extends React.Component {
                           aria-labelledby="alert-dialog-title"
                           aria-describedby="alert-dialog-description"
                       >
-                          {/* <DialogContent>
+                          <DialogContent>
                               <DialogContentText id="alert-dialog-description" style={{fontFamily: "Shabnam"}}>
                                   "هیچ درخواستی ثبت نشده"
                               </DialogContentText>
-                          </DialogContent> */}
+                          </DialogContent>
                           <DialogActions>
                           <Button onClick={this.handleClose} color="primary" autoFocus style={{fontFamily: "Shabnam"}}>
                               بستن
