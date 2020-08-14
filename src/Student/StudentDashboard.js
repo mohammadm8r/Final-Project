@@ -7,12 +7,12 @@ import MainPage from "./Student Components/MainStu";
 
 
 class Dashboard extends React.Component {
-	constructor (props) {
+	constructor(props) {
 		super(props);
 		console.log(props.location.data);
 		this.state = {
 			user_id: ''
-		  };
+		};
 	}
 
 	componentDidMount() {
@@ -23,11 +23,25 @@ class Dashboard extends React.Component {
 		};
 		console.log(requestOptions.body);
 		fetch('http://localhost:3030/student/info', requestOptions)
-			.then(response => response.json())
-			.then(data => this.setState({ user_id: data.student_id }));
+			.then(async response => {
+				const data = await response.json();
+
+				// check for error response
+				if (!response.ok) {
+					// get error message from body or default to response status
+					const error = (data && data.message) || response.status;
+					return Promise.reject(error);
+				}
+				console.log(data)
+				this.setState({ user_id: data.student_id })
+			})
+			.catch(error => {
+				this.setState({ errorMessage: error.toString() });
+				console.error('There was an error!', error);
+			});
 	}
 
-	render () {
+	render() {
 		return (
 			<div>
 				<CssBaseline />
