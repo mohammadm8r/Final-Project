@@ -163,15 +163,19 @@ const useStyles = theme => ({
 class Header extends React.Component {
 	constructor(props){
 		super(props);
+		this.state = {
+			
+		}
 	}
 
 	render(){
+		console.log(this.props.data.user_name)
 		const { classes } = this.props;
 		return (
 			<AppBar position="fixed" className={classes.appBar}>
 				<Toolbar>
 					<Typography className={classes.title} variant="h6" noWrap>
-						محمد رضائی شریف آبادی
+						{this.props.data.user_name} {this.props.data.user_family}
 					</Typography>
 					<div className={classes.search}>
 						{/* <div className={classes.searchIcon}>

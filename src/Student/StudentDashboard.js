@@ -9,9 +9,13 @@ import MainPage from "./Student Components/MainStu";
 class Dashboard extends React.Component {
 	constructor(props) {
 		super(props);
-		console.log(props.location.data);
 		this.state = {
-			user_id: ''
+			user_id: '',
+			user_name:'',
+			user_family:'',
+			email:'',
+			password:'',
+			college:'',
 		};
 	}
 
@@ -21,11 +25,9 @@ class Dashboard extends React.Component {
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ "username": this.props.location.data }),
 		};
-		console.log(requestOptions.body);
 		fetch('http://localhost:3030/student/info', requestOptions)
 			.then(async response => {
 				const data = await response.json();
-
 				// check for error response
 				if (!response.ok) {
 					// get error message from body or default to response status
@@ -33,7 +35,14 @@ class Dashboard extends React.Component {
 					return Promise.reject(error);
 				}
 				console.log(data)
-				this.setState({ user_id: data.student_id })
+				this.setState({
+					user_id: data.student_id,
+					user_name: data.student_name,
+					user_family: data.student_family,
+					email: data.student_username,
+					password: data.student_password,
+					college: data.college
+				 })
 			})
 			.catch(error => {
 				this.setState({ errorMessage: error.toString() });
@@ -42,10 +51,11 @@ class Dashboard extends React.Component {
 	}
 
 	render() {
+		console.log(this.state)
 		return (
 			<div>
 				<CssBaseline />
-				<Header />
+				<Header data={this.state} />
 				<SideBar />
 				<MainPage />
 			</div>

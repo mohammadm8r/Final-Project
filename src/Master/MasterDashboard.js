@@ -10,12 +10,52 @@ import { withStyles } from '@material-ui/core/styles'
 class Dashboard extends React.Component {
 	constructor(props){
 		super(props);
+		this.state = {
+			user_id: '',
+			user_name:'',
+			user_family:'',
+			email:'',
+			password:'',
+			college:'',
+		};
 	}
+
+	componentDidMount() {
+		const requestOptions = {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ "username": this.props.location.data }),
+		};
+		fetch('http://localhost:3030/master/info', requestOptions)
+			.then(async response => {
+				const data = await response.json();
+				// check for error response
+				if (!response.ok) {
+					// get error message from body or default to response status
+					const error = (data && data.message) || response.status;
+					return Promise.reject(error);
+				}
+				console.log(data)
+				this.setState({
+					user_id: data.master_id,
+					user_name: data.master_name,
+					user_family: data.master_family,
+					email: data.master_username,
+					password: data.master_password,
+					college: data.college
+				 })
+			})
+			.catch(error => {
+				this.setState({ errorMessage: error.toString() });
+				console.error('There was an error!', error);
+			});
+	}
+
 	render(){
 		return (
 			<div>
 				<CssBaseline />
-				<Header />
+				<Header data={this.state}/>
 				<SideBar />
 				<MainPage />
 			</div>
