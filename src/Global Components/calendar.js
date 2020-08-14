@@ -43,7 +43,7 @@ class CustomCalendar extends React.Component {
  }
 
  onSelect(value) {
-  console.log("select" + value.date())
+  // console.log("select" + value.date())
   if (value.date() === 2 || value.date() === 4)
 	this.setState({
 	open: true
@@ -57,7 +57,7 @@ class CustomCalendar extends React.Component {
  }
 
  dateCellRender(value) {
-  console.log(value.date())
+  // console.log(value.date())
   if (value.date() === 2 || value.date() === 4)
    return (
     <span>

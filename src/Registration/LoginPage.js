@@ -171,7 +171,11 @@ class SignIn extends React.Component {
                                 </Link>
                             </Grid>
                             <Grid item xs={6}>
-                                <Link to="MasDashboard" style={{textDecoration: 'none'}}>
+                            <Link to={{
+                                    pathname:"/MasDashboard",
+                                    data: this.state.username
+                                    }}
+                                style={{textDecoration: 'none'}}>
                                     <Button
                                         type="submit"
                                         fullWidth

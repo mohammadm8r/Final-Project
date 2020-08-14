@@ -9,8 +9,24 @@ import MainPage from "./Student Components/MainStu";
 class Dashboard extends React.Component {
 	constructor (props) {
 		super(props);
-		console.log(props.location)
+		console.log(props.location.data);
+		this.state = {
+			user_id: ''
+		  };
 	}
+
+	componentDidMount() {
+		const requestOptions = {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ "username": this.props.location.data }),
+		};
+		console.log(requestOptions.body);
+		fetch('http://localhost:3030/student/info', requestOptions)
+			.then(response => response.json())
+			.then(data => this.setState({ user_id: data.student_id }));
+	}
+
 	render () {
 		return (
 			<div>
