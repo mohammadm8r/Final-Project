@@ -23,7 +23,7 @@ class Dashboard extends React.Component {
 		const requestOptions = {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ "username": this.props.location.data }),
+			body: JSON.stringify({ "username": localStorage.username }),
 		};
 		fetch('http://localhost:3030/student/info', requestOptions)
 			.then(async response => {

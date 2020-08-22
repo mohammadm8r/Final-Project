@@ -23,7 +23,6 @@ import CardContent from "@material-ui/core/CardContent";
 import StuDashboard from "../Student/StudentDashboard.js"
 import { withStyles } from '@material-ui/core/styles'
 
-
 import {Link} from 'react-router-dom';
 
 // import { Link as RouterLink } from 'react-router-dom';
@@ -74,6 +73,9 @@ const useStyles = theme => ({
 });
 
 class SignIn extends React.Component {
+
+    userData;
+
     constructor (props) {
         super(props);
         this.state={
@@ -92,6 +94,7 @@ class SignIn extends React.Component {
         this.setState({password: event.target.value})
         console.log(this.state)
     }
+    
 
     render() {
         const { classes } = this.props
@@ -147,16 +150,11 @@ class SignIn extends React.Component {
                         autoComplete="current-password"
                         onChange={this.handlePasswordChange}
                         />
-                        {/* <FormControlLabel
-                        disableTypography
-                        control={<Checkbox value="remember" color="primary" />}
-                        label={<Typography type="body2" style={{ fontFamily: 'Shabnam', textAlign: 'right'}}>مرا به خاطرت نگه دار</Typography>}
-                        /> */}
                         <Grid container spacing={1}>
                             <Grid item xs={6}>
                                 <Link to={{
                                     pathname:"/StuDashboard",
-                                    data: this.state.username
+                                    data: localStorage.setItem('username', this.state.username)
                                     }}
                                 style={{textDecoration: 'none'}}>
                                     <Button
@@ -173,7 +171,7 @@ class SignIn extends React.Component {
                             <Grid item xs={6}>
                             <Link to={{
                                     pathname:"/MasDashboard",
-                                    data: this.state.username
+                                    data: localStorage.setItem('username', this.state.username),
                                     }}
                                 style={{textDecoration: 'none'}}>
                                     <Button

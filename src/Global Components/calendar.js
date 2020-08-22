@@ -19,8 +19,6 @@ import moment from "moment";
 import "moment/locale/zh-cn";
 import "moment/locale/en-gb";
 import { red } from "@material-ui/core/colors";
-import Image from 'material-ui-image'
-import ClassPhoto from "../students-in-classroom.jpg";
 
 
 const format = "YYYY-MM-DD";
@@ -81,27 +79,7 @@ class CustomCalendar extends React.Component {
      dateCellContentRender={this.dateCellRender}
      locale={enUS}
     />
-    <Dialog
-     open={this.state.open}
-     onClose={this.handleClose}
-     aria-labelledby="alert-dialog-title"
-     aria-describedby="alert-dialog-description"
-    >
-     {/* <DialogTitle id="alert-dialog-title">{"Use Google's location service?"}</DialogTitle> */}
-     <DialogContent style={{width: '500px'}}>
-		<Image src={ClassPhoto} />
-     </DialogContent>
-     <DialogActions>
-      <Button onClick={this.handleClose} color="primary" style={{fontFamily: "Shabnam"}}>
-       ثبت درخواست
-     </Button>
-      <Button onClick={this.handleClose} color="primary" autoFocus style={{fontFamily: "Shabnam"}}>
-       لغو
-     </Button>
-     </DialogActions>
-    </Dialog>
    </div>
-
   );
  }
 }

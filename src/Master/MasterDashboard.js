@@ -17,6 +17,7 @@ class Dashboard extends React.Component {
 			email:'',
 			password:'',
 			college:'',
+			isReady: false,
 		};
 	}
 
@@ -24,12 +25,11 @@ class Dashboard extends React.Component {
 		const requestOptions = {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ "username": this.props.location.data }),
+			body: JSON.stringify({ "username": localStorage.getItem('username') }),
 		};
 		fetch('http://localhost:3030/master/info', requestOptions)
 			.then(async response => {
 				const data = await response.json();
-				// check for error response
 				if (!response.ok) {
 					// get error message from body or default to response status
 					const error = (data && data.message) || response.status;
@@ -42,7 +42,8 @@ class Dashboard extends React.Component {
 					user_family: data.master_family,
 					email: data.master_username,
 					password: data.master_password,
-					college: data.college
+					college: data.college,
+					isReady: true
 				 })
 			})
 			.catch(error => {
@@ -57,7 +58,7 @@ class Dashboard extends React.Component {
 				<CssBaseline />
 				<Header data={this.state}/>
 				<SideBar />
-				<MainPage />
+				<MainPage data={this.state}/>
 			</div>
 		);
 	}

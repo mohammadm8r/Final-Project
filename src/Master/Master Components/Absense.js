@@ -1,5 +1,5 @@
 import React from 'react';
-import Link from '@material-ui/core/Link';
+// import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -13,12 +13,18 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-
+// import { StylesProvider, jssPreset } from '@material-ui/core/styles';
+import {Link} from 'react-router-dom';
+// import { withStyles } from '@material-ui/core/styles'
+import '../../App.css';
 import Demo from '../../Global Components/calendar'
 
 // Generate Order Data
 
 const useStyles = theme => ({
+  NumberFont: {
+    fontFamily: 'IranSansFaNum',
+  },
   font: {
     fontFamily: 'Shabnam',
   },
@@ -34,9 +40,9 @@ class Absense extends React.Component {
     }
 
     this.state.rows.push(
-      this.createData(0, 'رضا قیداری', '۲/۳۲', 'درخواست', 'مشاهده تقویم'),
-      this.createData(1, 'مرتضی کامرانی‌فرد', '۵/۳۲', 'درخواست', 'مشاهده تقویم'),
-      this.createData(2, 'حمید عسکری', '۳/۳۲', 'درخواست', 'مشاهده تقویم'),
+      this.createData(0, 'محمد رضائی', '۲', '-', 'مشاهده تقویم'),
+      this.createData(1, 'رضا قیداری', '۴', '۲', 'مشاهده تقویم'),
+      this.createData(2, 'علی جعفری', '-', '-', 'مشاهده تقویم'),
     );
 
     this.handleClickOpenReq = this.handleClickOpenReq.bind(this);
@@ -61,8 +67,8 @@ class Absense extends React.Component {
     this.setState({ openCal: false })
   };
 
-  createData(id, date, gheibatha, status, taghvim) {
-    return { id, date, gheibatha, status, taghvim };
+  createData(id, name, gheibatha, requests, taghvim) {
+    return { id, name, gheibatha, requests, taghvim };
   }
 
   preventDefault(event) {
@@ -71,25 +77,36 @@ class Absense extends React.Component {
 
   render() {
     const { classes } = this.props;
-
+    var i;
+    for(i = 0; i < Object.values(this.props.data.names).length; i++){
+      this.state.rows.push(
+        this.createData(i, this.props.data.names[i], this.props.data.familyes[i], '2', '-', 'مشاهده تقویم'),
+      );
+    }
     return (
       <React.Fragment>
-        <Title style={{ textAlign: 'center', alignItems: 'center' }}>لیست دانشجویان</Title>
+        <Title style={{ textAlign: 'center', alignItems: 'center' }}>تعداد جلسات برگزار شده: ۱۸</Title>
         <Table size="small">
           <TableHead>
             <TableRow style={{ alignItems: 'center' }}>
+              <TableCell className={classes.font} style={{ textAlign: 'center', fontWeight: 'bold' }}>ردیف</TableCell>
               <TableCell className={classes.font} style={{ textAlign: 'center', fontWeight: 'bold' }}>نام دانشجو</TableCell>
               <TableCell className={classes.font} style={{ textAlign: 'center', fontWeight: 'bold' }}>تعداد غیبت</TableCell>
-              <TableCell className={classes.font} style={{ textAlign: 'center', fontWeight: 'bold' }}>درخواست‌ها</TableCell>
+              <TableCell className={classes.font} style={{ textAlign: 'center', fontWeight: 'bold' }}>تعداد درخواست‌های بی‌پاسخ</TableCell>
               <TableCell className={classes.font} style={{ textAlign: 'center', fontWeight: 'bold' }}>مشاهده غیبت‌ها روی تقویم</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {this.state.rows.map(row => (
               <TableRow key={row.id}>
-                <TableCell className={classes.font} style={{ textAlign: 'center' }}>{row.date}</TableCell>
-                <TableCell className={classes.font} style={{ textAlign: 'center' }}>{row.gheibatha}</TableCell>
+                <TableCell className={classes.NumberFont} style={{ textAlign: 'center' }}>{row.id + 1}</TableCell>
                 <TableCell className={classes.font} style={{ textAlign: 'center' }}>
+                  <Link style={{textDecoration: 'none', cursor:'pointer'}} to={{pathname:"/StudentDetails" , data: row.name}}>
+                    {row.name}
+                  </Link>
+                </TableCell>
+                <TableCell className={classes.font} style={{ textAlign: 'center' }}>{row.gheibatha}</TableCell>
+                {/* <TableCell className={classes.font} style={{ textAlign: 'center' }}>
                   <Button style={{ cursor: 'pointer', fontFamily: 'Shabnam' }} onClick={this.handleClickOpenReq}>{row.status}</Button>
                   <Dialog
                     open={this.state.openReq}
@@ -108,7 +125,8 @@ class Absense extends React.Component {
                           </Button>
                     </DialogActions>
                   </Dialog>
-                </TableCell>
+                </TableCell> */}
+                <TableCell className={classes.font} style={{ textAlign: 'center' }}>{row.requests}</TableCell>
                 <TableCell className={classes.font} style={{ textAlign: 'center' }}>
                   <Button style={{ cursor: 'pointer', fontFamily: 'Shabnam' }} onClick={this.handleClickOpenCal}>{row.taghvim}</Button>
                   <Dialog
@@ -125,7 +143,7 @@ class Absense extends React.Component {
                     <DialogActions>
                       <Button onClick={this.handleCloseCal} color="primary" autoFocus style={{ fontFamily: "Shabnam" }}>
                         بستن
-                          </Button>
+                      </Button>
                     </DialogActions>
                   </Dialog>
                 </TableCell>

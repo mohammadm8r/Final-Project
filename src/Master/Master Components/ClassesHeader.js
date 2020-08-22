@@ -1,48 +1,21 @@
-
 import React from "react";
-import { fade, makeStyles } from "@material-ui/core/styles";
-import { create } from "jss";
-import rtl from "jss-rtl";
-import { StylesProvider, jssPreset } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Drawer from "@material-ui/core/Drawer";
+import AppBar from "@material-ui/core/AppBar";
+import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
+import NotificationsIcon from "@material-ui/icons/Notifications";
+import IconButton from "@material-ui/core/IconButton";
+import Badge from "@material-ui/core/Badge";
 import Toolbar from "@material-ui/core/Toolbar";
-import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
-import Container from "@material-ui/core/Container";
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
-import Link from "@material-ui/core/Link";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import SchoolIcon from "@material-ui/icons/School";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
-import Avatar from "@material-ui/core/Avatar";
-import MenuIcon from "@material-ui/icons/Menu";
-import SearchIcon from "@material-ui/icons/Search";
-import AccountCircle from "@material-ui/icons/AccountCircle";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MoreIcon from "@material-ui/icons/MoreVert";
+import InputBase from "@material-ui/core/InputBase";
+import MailIcon from "@material-ui/icons/Mail";
+import { fade, makeStyles } from "@material-ui/core/styles";
 import { pink, blue } from "@material-ui/core/colors";
-// import Profile from "./Profile.jpg";
 import { withStyles } from '@material-ui/core/styles'
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
-import Info from "./Info.js";
-import InsertChartIcon from "@material-ui/icons/InsertChart";
-import ScheduleIcon from "@material-ui/icons/Schedule";
-// import Calendar from "rc-calendar";
-import Demo from "../../Global Components/calendar";
+import Logo from "./logo_fa.png";
+import { Avatar } from "@material-ui/core";
 
 const drawerWidth = 240;
 
-const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
 
 const useStyles = theme => ({
 	card: {
@@ -58,7 +31,6 @@ const useStyles = theme => ({
 		width: "500px",
 		alignItems: "center",
 		justifyContent: "center",
-		display: 'flex',
 		marginLeft: "20px",
 	},
 	appBar: {
@@ -90,6 +62,7 @@ const useStyles = theme => ({
 		[theme.breakpoints.up("sm")]: {
 			display: "block",
 		},
+		padding: '7px',
 	},
 	search: {
 		fontFamily: "Shabnam",
@@ -190,37 +163,39 @@ const useStyles = theme => ({
 	},
 });
 
-class MainPage extends React.Component {
+class Header extends React.Component {
 	constructor(props){
 		super(props);
+		this.state = {
+
+		}
 	}
 
 	render(){
-		const {classes} = this.props;
-
+		// console.log(this.props.data.user_name)
+		const { classes } = this.props;
 		return (
-			<main className={classes.contentt}>
-				<div className={classes.appBarSpacer} />
-				<Container maxWidth="lg" className={classes.container}>
-					<Grid container spacing={1}>
-						<Grid item xs={6}>
-							<Card className={classes.infoCard}>
-								<Paper className={classes.paper}>
-									<Info />
-								</Paper>
-							</Card>
-						</Grid>
-						{/* <Grid item xs={6}>
-							<Card className={classes.infoCard}>
-								<Demo />
-							</Card>
-						</Grid> */}
-					</Grid>
-				</Container>
-			</main>
+			<AppBar position="fixed" className={classes.appBar}>
+				<Toolbar>
+					<Avatar alt="AUT Logo" src={Logo} />
+					<div className={classes.grow} />
+					<div className={classes.sectionDesktop}>
+						<Typography className={classes.title} variant="h6" noWrap>
+							{this.props.data}
+						</Typography>
+						<IconButton aria-label="show 17 new notifications" color="inherit">
+							<Badge badgeContent={1} color="secondary">
+								<NotificationsIcon />
+							</Badge>
+						</IconButton>
+						<IconButton color="inherit">
+							<PowerSettingsNewIcon />
+						</IconButton>
+					</div>
+				</Toolbar>
+			</AppBar>
 		);
 	}
 }
 
-
-export default withStyles(useStyles)(MainPage);
+export default withStyles(useStyles)(Header);

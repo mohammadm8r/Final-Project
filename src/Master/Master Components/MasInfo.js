@@ -12,64 +12,83 @@ import rtl from 'jss-rtl';
 import { StylesProvider, jssPreset } from '@material-ui/core/styles';
 import {Link} from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles'
+import '../../App.css';
+// import { PersianNumber } from 'react-persian';
+
 
 // Generate Order Data
 
 
 const useStyles = theme => ({
-    font: {
-        fontFamily: 'Shabnam',
+    NumberFont: {
+        fontFamily: 'IranSansFaNum',
       },
+    font: {
+      fontFamily: 'Shabnam',
+    },
 });
 
 class Info extends React.Component {
   constructor (props) {
     super(props);
     this.state={
-      nameClass: this.createData.name_of_class,
-      rows: []
+      rows: [],
+      nameOfClass: ''
     }
+    
     this.createData = this.createData.bind(this);
     this.changeClass = this.changeClass.bind(this);
   }
 
-  createData(id, name_of_class, code_of_class) {
-    return { id, name_of_class, code_of_class};
+  createData(id, name_of_class, group, day) {
+    return { id, name_of_class, group, day };
+  }
+
+  changeClass(e){
+    this.setState({nameOfClass: e.target.value})
   }
 
   preventDefault(event) {
     event.preventDefault();
   }
-  
-  changeClass(evenet) {
-    console.log(this.state.rows[2])
-  }
 
+  
   render(){
+    var i;
+    // console.log(Object.values(this.props.data.course_titles))
+    for(i = 0; i < Object.values(this.props.data.course_titles).length; i++){
+      this.state.rows.push(
+        this.createData(i, this.props.data.course_titles[i], this.props.data.course_groups[i], this.props.data.course_days[i]),
+      );
+    }
     const { classes } = this.props;
     const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
-    this.state.rows.push(
-      this.createData(0, 'مبانی برنامه نویسی', '3102110'),
-      this.createData(1, 'اندیشه ۱', '1200110'),
-      this.createData(3, 'فیزیک ۲', '1203212'),
-      this.createData(4, 'فیزیک ۲', '1203212'),
-      this.createData(5, 'فیزیک ۲', '1203212'),
-    );
     return (
       <React.Fragment>
         <Title style={{ textAlign: 'center' }}>کلاس‌های ترم جاری</Title>
         <Table size="small">
           <TableHead>
             <TableRow>
-              <TableCell className={classes.font} style={{ textAlign: 'center' }}>کد درس</TableCell>
-              <TableCell className={classes.font} style={{ textAlign: 'center' }}>نام کلاس</TableCell>
+            <TableCell className={classes.font} style={{ textAlign: 'center' }}>ردیف</TableCell>
+              <TableCell className={classes.font} style={{ textAlign: 'center' }}>نام درس</TableCell>
+              <TableCell className={classes.font} style={{ textAlign: 'center' }}>گروه</TableCell>
+              <TableCell className={classes.font} style={{ textAlign: 'center' }}>روز</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {this.state.rows.map(row => (
-              <TableRow key={row.id}>
-                <TableCell className={classes.font} style={{ textAlign: 'center' }}>{row.code_of_class}</TableCell>
-                <TableCell className={classes.font} style={{ textAlign: 'center' }} onClick={this.changeClass}><Link style={{textDecoration: 'none', cursor:'pointer'}} to={{pathname:"/MasClasses" , data: this.state.nameClass}}>{row.name_of_class}</Link></TableCell>
+              <TableRow key={row.id} rowNumber = {row.id}>
+                <TableCell className={classes.NumberFont} style={{ textAlign: 'center' }}> {row.id + 1} </TableCell>
+                <TableCell className={classes.font} style={{ textAlign: 'center' }} onClick={this.changeClass}>
+                  <Link style={{textDecoration: 'none', cursor:'pointer'}} to={{
+                    pathname:"/MasClasses",
+                    data: [row.name_of_class, row.group]
+                  }}>
+                    {row.name_of_class}
+                  </Link>
+                </TableCell>
+                <TableCell className={classes.NumberFont} style={{ textAlign: 'center' }}> {row.group} </TableCell>
+                <TableCell className={classes.font} style={{ textAlign: 'center' }}>{row.day}</TableCell>
               </TableRow>
             ))}
           </TableBody>

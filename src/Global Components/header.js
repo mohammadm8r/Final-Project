@@ -11,6 +11,8 @@ import MailIcon from "@material-ui/icons/Mail";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import { pink, blue } from "@material-ui/core/colors";
 import { withStyles } from '@material-ui/core/styles'
+import Logo from "./logo_fa.png";
+import { Avatar } from "@material-ui/core";
 
 const drawerWidth = 240;
 
@@ -60,32 +62,9 @@ const useStyles = theme => ({
 		[theme.breakpoints.up("sm")]: {
 			display: "block",
 		},
+		padding: '7px',
 	},
-	search: {
-		fontFamily: "Shabnam",
-		position: "relative",
-		borderRadius: theme.shape.borderRadius,
-		backgroundColor: fade(theme.palette.common.white, 0.15),
-		"&:hover": {
-			backgroundColor: fade(theme.palette.common.white, 0.25),
-		},
-		marginRight: theme.spacing(2),
-		marginLeft: 0,
-		width: "100%",
-		[theme.breakpoints.up("sm")]: {
-			marginLeft: theme.spacing(3),
-			width: "auto",
-		},
-	},
-	searchIcon: {
-		padding: theme.spacing(0, 2),
-		height: "100%",
-		position: "absolute",
-		pointerEvents: "none",
-		display: "flex",
-		alignItems: "center",
-		justifyContent: "center",
-	},
+
 	inputRoot: {
 		fontFamily: "Shabnam",
 		color: "inherit",
@@ -164,43 +143,26 @@ class Header extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
-			
+
 		}
 	}
-
+	
 	render(){
 		console.log(this.props.data.user_name)
 		const { classes } = this.props;
 		return (
 			<AppBar position="fixed" className={classes.appBar}>
 				<Toolbar>
-					<Typography className={classes.title} variant="h6" noWrap>
-						{this.props.data.user_name} {this.props.data.user_family}
-					</Typography>
-					<div className={classes.search}>
-						{/* <div className={classes.searchIcon}>
-						<SearchIcon />
-					  </div> */}
-						<InputBase
-							placeholder="جستجو..."
-							classes={{
-								fontFamily: "Shabnam",
-								root: classes.inputRoot,
-								input: classes.inputInput,
-							}}
-							inputProps={{ "aria-label": "search" }}
-						/>
-					</div>
+					<Avatar alt="AUT Logo" src={Logo} />
 					<div className={classes.grow} />
 					<div className={classes.sectionDesktop}>
+						<Typography className={classes.title} variant="h6" noWrap>
+							{this.props.data.user_name} {this.props.data.user_family}
+							{/* احمد نیک‌آبادی */}
+						</Typography>
 						<IconButton aria-label="show 17 new notifications" color="inherit">
-							<Badge badgeContent={17} color="secondary">
+							<Badge badgeContent={1} color="secondary">
 								<NotificationsIcon />
-							</Badge>
-						</IconButton>
-						<IconButton aria-label="show 4 new mails" color="inherit">
-							<Badge badgeContent={4} color="secondary">
-								<MailIcon />
 							</Badge>
 						</IconButton>
 						<IconButton color="inherit">

@@ -20,6 +20,7 @@ import ScheduleIcon from '@material-ui/icons/Schedule';
 import { withStyles } from '@material-ui/core/styles'
 // import Header from "./components/header";
 import SideBar from "./MasDrawer";
+import ClassesHeader from './ClassesHeader'
 
 const drawerWidth = 240;
 
@@ -113,21 +114,47 @@ const useStyles = theme => ({
 class Student extends React.Component {
   constructor(props){
     super(props);
+    this.state = {
+      names: [],
+      familyes: [],
+
+    }
   }
+
+  componentDidMount() {
+		var i;
+		const requestOptions = {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ "course_title": this.props.location.data[0], "course_group": this.props.location.data[1]}),
+		};
+		fetch('http://localhost:3030/courseStudents/info', requestOptions)
+			.then(async response => {
+				const data = await response.json();
+				if (!response.ok) {
+					const error = (data && data.message) || response.status;
+					return Promise.reject(error);
+				}
+				for(i in data){
+					this.state.names.push(data[i].student_name)
+					this.state.familyes.push(data[i].student_family)
+				}
+			})
+			.catch(error => {
+				this.setState({ errorMessage: error.toString() });
+				console.error('There was an error!', error);
+			});
+  }
+  
   render(){
+    console.log(this.props.location.data[0])
     const {classes} = this.props;
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
   
     return (
       <div className={classes.root}>
         <CssBaseline />
-        <AppBar position="absolute" className={clsx(classes.appBar)}>
-          <Toolbar className={classes.toolbar}>
-            <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-              مبانی برنامه‌نویسی
-            </Typography>
-          </Toolbar>
-        </AppBar>
+        <ClassesHeader data={this.props.location.data[0]}/>
         <SideBar />
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
@@ -135,7 +162,7 @@ class Student extends React.Component {
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <Paper className={classes.paper}>
-                  <Absense />
+                  <Absense data={this.state}/>
                 </Paper>
               </Grid>
             </Grid>

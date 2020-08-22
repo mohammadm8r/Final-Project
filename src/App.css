@@ -1,3 +1,58 @@
+@font-face {
+  font-family: IranSansFaNum;
+  src: url('./fonts/IranSans(FaNum)/IRANSans(FaNum).eot');
+  src: url('./fonts/IranSans(FaNum)/IRANSans(FaNum).eot?#iefix') format('embedded-opentype'),
+       url('./fonts/IranSans(FaNum)/IRANSans(FaNum).woff') format('woff'),
+       url('./fonts/IranSans(FaNum)/IRANSans(FaNum).ttf') format('truetype');
+  font-weight: normal;
+}
+      
+@font-face {
+  font-family: IranSansFaNum-Bold;
+  src: url('./fonts/IranSans(FaNum)/IRANSans(FaNum)_Bold.eot');
+  src: url('./fonts/IranSans(FaNum)/IRANSans(FaNum)_Bold.eot?#iefix') format('embedded-opentype'),
+       url('./fonts/IranSans(FaNum)/IRANSans(FaNum)_Bold.woff') format('woff'),
+       url('./fonts/IranSans(FaNum)/IRANSans(FaNum)_Bold.ttf') format('truetype');
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: IranSansFaNum-Light;
+  src: url('./fonts/IranSans(FaNum)/IRANSans(FaNum)_Light.eot');
+  src: url('./fonts/IranSans(FaNum)/IRANSans(FaNum)_Light.eot?#iefix') format('embedded-opentype'),
+       url('./fonts/IranSans(FaNum)/IRANSans(FaNum)_Light.woff') format('woff'),
+       url('./fonts/IranSans(FaNum)/IRANSans(FaNum)_Light.ttf') format('truetype');
+  font-weight: 300;
+}
+
+
+@font-face {
+  font-family: IranSans;
+  src: url('./fonts/IranSans/IRANSans.eot');
+  src: url('./fonts/IranSans/IRANSans.eot?#iefix') format('embedded-opentype'),
+       url('./fonts/IranSans/IRANSans.woff') format('woff'),
+       url('./fonts/IranSans/IRANSans.ttf') format('truetype');
+  font-weight: normal;
+}
+     
+@font-face {
+  font-family: IranSans-Bold;
+  src: url('./fonts/IranSans/IRANSans_Bold.eot');
+  src: url('./fonts/IranSans/IRANSans_Bold.eot?#iefix') format('embedded-opentype'),
+       url('./fonts/IranSans/IRANSans_Bold.woff') format('woff'),
+       url('./fonts/IranSans/IRANSans_Bold.ttf') format('truetype');
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: IranSans-Light;
+  src: url('./fonts/IranSans/IRANSans_Light.eot');
+  src: url('./fonts/IranSans/IRANSans_Light.eot?#iefix') format('embedded-opentype'),
+       url('./fonts/IranSans/IRANSans_Light.woff') format('woff'),
+       url('./fonts/IranSans/IRANSans_Light.ttf') format('truetype');
+  font-weight: 300;
+}
+
 .App {
   text-align: center;
 }

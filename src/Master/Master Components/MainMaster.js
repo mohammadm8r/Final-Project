@@ -188,12 +188,47 @@ const useStyles = theme => ({
 class MainPage extends React.Component {
 	constructor(props){
 		super(props);
+		this.state = {
+			course_titles: [],
+			course_groups: [],
+			course_days: [],
+		}
 	}
+
+	componentDidMount() {
+		var i;
+		const requestOptions = {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ "username": localStorage.username }),
+		};
+		fetch('http://localhost:3030/courses/info', requestOptions)
+			.then(async response => {
+				const data = await response.json();
+				// check for error response
+				if (!response.ok) {
+					// get error message from body or default to response status
+					const error = (data && data.message) || response.status;
+					return Promise.reject(error);
+				}
+				for(i in data){
+					this.state.course_titles.push(data[i].course_title)
+					this.state.course_groups.push(data[i].course_group)
+					this.state.course_days.push(data[i].course_days)
+				}
+				
+			})
+			.catch(error => {
+				this.setState({ errorMessage: error.toString() });
+				console.error('There was an error!', error);
+			});
+	}
+
 
 	render(){
 		const {classes} = this.props;
 		const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
-
+		console.log(this.state)
 		return (
 			<main className={classes.contentt}>
 				<div className={classes.appBarSpacer} />
@@ -202,7 +237,7 @@ class MainPage extends React.Component {
 						<Grid item xs={12}>
 							<Card className={classes.infoCard}>
 								<Paper className={classes.paper}>
-									<MasInfo />
+									<MasInfo data={this.state} />
 								</Paper>
 							</Card>
 						</Grid>
