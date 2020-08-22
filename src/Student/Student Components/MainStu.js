@@ -40,10 +40,8 @@ import ScheduleIcon from "@material-ui/icons/Schedule";
 // import Calendar from "rc-calendar";
 import Demo from "../../Global Components/calendar";
 
+
 const drawerWidth = 240;
-
-const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
-
 const useStyles = theme => ({
 	card: {
 		margin: "10px",
@@ -55,10 +53,9 @@ const useStyles = theme => ({
 	infoCard: {
 		margin: "10px",
 		minWidth: 150,
-		width: "500px",
+		// width: "500px",
 		alignItems: "center",
 		justifyContent: "center",
-		display: 'flex',
 		marginLeft: "20px",
 	},
 	appBar: {
@@ -193,6 +190,39 @@ const useStyles = theme => ({
 class MainPage extends React.Component {
 	constructor(props){
 		super(props);
+		this.state = {
+			course_titles: [],
+			course_groups: [],
+			course_days: [],
+		}
+	}
+
+	componentDidMount() {
+		var i;
+		const requestOptions = {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ "username": localStorage.username }),
+		};
+		fetch('http://localhost:3030/studentCourses', requestOptions)
+			.then(async response => {
+				const data = await response.json();
+				// check for error response
+				if (!response.ok) {
+					// get error message from body or default to response status
+					const error = (data && data.message) || response.status;
+					return Promise.reject(error);
+				}
+				for(i in data){
+					this.state.course_titles.push(data[i].course_title)
+					this.state.course_groups.push(data[i].course_group)
+					this.state.course_days.push(data[i].course_days)
+				}
+			})
+			.catch(error => {
+				this.setState({ errorMessage: error.toString() });
+				console.error('There was an error!', error);
+			});
 	}
 
 	render(){
@@ -202,19 +232,14 @@ class MainPage extends React.Component {
 			<main className={classes.contentt}>
 				<div className={classes.appBarSpacer} />
 				<Container maxWidth="lg" className={classes.container}>
-					<Grid container spacing={1}>
-						<Grid item xs={6}>
+					<Grid container spacing={5}>
+						<Grid item xs={12}>
 							<Card className={classes.infoCard}>
 								<Paper className={classes.paper}>
-									<Info />
+									<Info data={this.state}/>
 								</Paper>
 							</Card>
 						</Grid>
-						{/* <Grid item xs={6}>
-							<Card className={classes.infoCard}>
-								<Demo />
-							</Card>
-						</Grid> */}
 					</Grid>
 				</Container>
 			</main>

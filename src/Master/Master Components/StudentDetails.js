@@ -117,6 +117,9 @@ class StudentDetails extends React.Component {
         super(props);
         this.state = {
         }
+        if(this.props.location.data){
+          localStorage.setItem('student_name', this.props.location.data)
+        }
         console.log(this.props.data)
       }
       render(){
@@ -135,7 +138,7 @@ class StudentDetails extends React.Component {
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
                     <Paper className={classes.paper}>
-                      <StudentAbsenseInfo  data={this.props.location.data}/>
+                      <StudentAbsenseInfo  data={localStorage.getItem('student_name')}/>
                     </Paper>
                   </Grid>
                 </Grid>

@@ -37,13 +37,9 @@ class Info extends React.Component {
       Calendrows: []
     }
 
-    this.state.rows.push(
-      this.createData(0, '2', '10', 'مبانی برنامه نویسی', '3102110'),
-      this.createData(1, '3', '5', 'اندیشه ۱', '1200110'),
-      this.createData(3, '2', '10', 'فیزیک ۲', '1203212'),
-      this.createData(4, '2', '10', 'فیزیک ۲', '1203212'),
-      this.createData(5, '2', '10', 'فیزیک ۲', '1203212'),
-    );
+    // this.state.rows.push(
+    //   this.createData(0, 'برنامه‌نویسی پیشرفته', 2, 'شنبه - دوشنبه'),
+    // );
 
     this.createData = this.createData.bind(this);
     // this.changeClass = this.changeClass.bind(this);
@@ -51,8 +47,8 @@ class Info extends React.Component {
     this.handleClose = this.handleClose.bind(this);
   }
 
-  createData(id, num_of_absense, num_of_classes, name_of_class, code_of_class) {
-    return { id, num_of_absense, num_of_classes, name_of_class, code_of_class };
+  createData(id, name_of_class, class_group, class_time) {
+    return { id, name_of_class, class_group, class_time };
   }
 
   preventDefault(event) {
@@ -73,50 +69,39 @@ class Info extends React.Component {
   render() {
     const { classes } = this.props;
     const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
-
+    var i;
+    for(i = 0; i < Object.values(this.props.data.course_titles).length; i++){
+      this.state.rows.push(
+        this.createData(i, this.props.data.course_titles[i], this.props.data.course_groups[i], this.props.data.course_days[i]),
+      );
+    }
     return (
+      
       <React.Fragment>
         <Title style={{ textAlign: 'center' }}>کلاس‌های ترم جاری</Title>
-        <Table size="small">
+        <Table size="large"> 
           <TableHead>
             <TableRow>
-              <TableCell className={classes.font} style={{ textAlign: 'center' }}>کد درس</TableCell>
+              <TableCell className={classes.font} style={{ textAlign: 'center' }}>ردیف</TableCell>
               <TableCell className={classes.font} style={{ textAlign: 'center' }}>نام کلاس</TableCell>
-              <TableCell className={classes.font} style={{ textAlign: 'center' }}>تعداد جلسات برگزار شده</TableCell>
-              <TableCell className={classes.font} style={{ textAlign: 'center' }}>تعداد غیبت</TableCell>
+              <TableCell className={classes.font} style={{ textAlign: 'center' }}>گروه</TableCell>
+              <TableCell className={classes.font} style={{ textAlign: 'center' }}>روز</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {this.state.rows.map(row => (
               <TableRow key={row.id}>
-                <TableCell className={classes.font} style={{ textAlign: 'center' }}>{row.code_of_class}</TableCell>
-                <TableCell className={classes.font} style={{ textAlign: 'center' }}>
-                  <Button style={{ cursor: 'pointer', fontFamily: 'Shabnam' }} onClick={this.handleClickOpen}>
+                <TableCell className={classes.font} style={{ textAlign: 'center', fontFamily: 'IranSansFaNum'}}>{row.id + 1}</TableCell>
+                <TableCell className={classes.font} style={{ textAlign: 'center' }} onClick={this.changeClass}>
+                  <Link style={{textDecoration: 'none', cursor:'pointer'}} to={{
+                    pathname:"/StudentClasses",
+                    data: [row.name_of_class, row.class_group]
+                  }}>
                     {row.name_of_class}
-                  </Button>
-                  <Dialog
-                    open={this.state.open}
-                    onClose={this.handleClose}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                  >
-                    <DialogContent>
-                      <DialogContentText id="alert-dialog-description" style={{ fontFamily: "Shabnam" }}>
-                        <Demo />
-                      </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                      <Button onClick={this.handleClose} color="primary" autoFocus style={{ fontFamily: "Shabnam" }}>
-                        بستن
-                        </Button>
-                    </DialogActions>
-                  </Dialog>
-                  {/* <Link style={{textDecoration: 'none', cursor:'pointer'}} to={{pathname:"/MasClasses" , data: this.state.nameClass}}>
-                    {row.name_of_class}
-                  </Link> */}
+                  </Link>
                 </TableCell>
-                <TableCell className={classes.font} style={{ textAlign: 'center' }}>{row.num_of_classes}</TableCell>
-                <TableCell className={classes.font} style={{ textAlign: 'center' }}>{row.num_of_absense}</TableCell>
+                <TableCell className={classes.font} style={{ textAlign: 'center', fontFamily: 'IranSansFaNum'}}>{row.class_group}</TableCell>
+                <TableCell className={classes.font} style={{ textAlign: 'center' }}>{row.class_time}</TableCell>
               </TableRow>
             ))}
           </TableBody>

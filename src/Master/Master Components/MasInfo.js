@@ -12,7 +12,9 @@ import rtl from 'jss-rtl';
 import { StylesProvider, jssPreset } from '@material-ui/core/styles';
 import {Link} from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles'
+import ReactLoading from 'react-loading';
 import '../../App.css';
+import { blue } from '@material-ui/core/colors';
 // import { PersianNumber } from 'react-persian';
 
 
@@ -55,7 +57,6 @@ class Info extends React.Component {
   
   render(){
     var i;
-    // console.log(Object.values(this.props.data.course_titles))
     for(i = 0; i < Object.values(this.props.data.course_titles).length; i++){
       this.state.rows.push(
         this.createData(i, this.props.data.course_titles[i], this.props.data.course_groups[i], this.props.data.course_days[i]),

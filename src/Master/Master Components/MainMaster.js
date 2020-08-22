@@ -211,6 +211,9 @@ class MainPage extends React.Component {
 					const error = (data && data.message) || response.status;
 					return Promise.reject(error);
 				}
+				// const maghadir = data.map(l => Object.assign({}, l))
+				// console.log(maghadir)
+				// this.setState({master_details: JSON.stringify(maghadir)})
 				for(i in data){
 					this.state.course_titles.push(data[i].course_title)
 					this.state.course_groups.push(data[i].course_group)
@@ -224,11 +227,10 @@ class MainPage extends React.Component {
 			});
 	}
 
-
 	render(){
 		const {classes} = this.props;
-		const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
 		console.log(this.state)
+		const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
 		return (
 			<main className={classes.contentt}>
 				<div className={classes.appBarSpacer} />

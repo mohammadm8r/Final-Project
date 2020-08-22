@@ -38,12 +38,13 @@ class Absense extends React.Component {
       openCal: false,
       rows: []
     }
+    // console.log(Object.keys(this.props.data.names))
 
-    this.state.rows.push(
-      this.createData(0, 'محمد رضائی', '۲', '-', 'مشاهده تقویم'),
-      this.createData(1, 'رضا قیداری', '۴', '۲', 'مشاهده تقویم'),
-      this.createData(2, 'علی جعفری', '-', '-', 'مشاهده تقویم'),
-    );
+    // this.state.rows.push(
+    //   this.createData(0, 'محمد رضائی', '۲', '-', 'مشاهده تقویم'),
+    //   this.createData(1, 'رضا قیداری', '۴', '۲', 'مشاهده تقویم'),
+    //   this.createData(2, 'علی جعفری', '-', '-', 'مشاهده تقویم'),
+    // );
 
     this.handleClickOpenReq = this.handleClickOpenReq.bind(this);
     this.handleClickOpenCal = this.handleClickOpenCal.bind(this);
@@ -76,11 +77,12 @@ class Absense extends React.Component {
   }
 
   render() {
+    // console.log(localStorage.getItem('names')[0].student_name)
     const { classes } = this.props;
     var i;
-    for(i = 0; i < Object.values(this.props.data.names).length; i++){
+    for(i = 0; i < this.props.data.names.length; i++){
       this.state.rows.push(
-        this.createData(i, this.props.data.names[i], this.props.data.familyes[i], '2', '-', 'مشاهده تقویم'),
+        this.createData(i, this.props.data.names[i].student_name +" "+ this.props.data.names[i].student_family, '2', '-', 'مشاهده تقویم'),
       );
     }
     return (
@@ -105,6 +107,11 @@ class Absense extends React.Component {
                     {row.name}
                   </Link>
                 </TableCell>
+                {/* <TableCell className={classes.font} style={{ textAlign: 'center' }}>
+                  <Link style={{textDecoration: 'none', cursor:'pointer'}} to={{pathname:"/StudentDetails" , data: row.name}}>
+                    {row.family}
+                  </Link>
+                </TableCell> */}
                 <TableCell className={classes.font} style={{ textAlign: 'center' }}>{row.gheibatha}</TableCell>
                 {/* <TableCell className={classes.font} style={{ textAlign: 'center' }}>
                   <Button style={{ cursor: 'pointer', fontFamily: 'Shabnam' }} onClick={this.handleClickOpenReq}>{row.status}</Button>
