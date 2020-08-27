@@ -36,15 +36,9 @@ class Absense extends React.Component {
     this.state = {
       openReq: false,
       openCal: false,
-      rows: []
+      rows: [],
+      requestsNum: 0,
     }
-    // console.log(Object.keys(this.props.data.names))
-
-    // this.state.rows.push(
-    //   this.createData(0, 'محمد رضائی', '۲', '-', 'مشاهده تقویم'),
-    //   this.createData(1, 'رضا قیداری', '۴', '۲', 'مشاهده تقویم'),
-    //   this.createData(2, 'علی جعفری', '-', '-', 'مشاهده تقویم'),
-    // );
 
     this.handleClickOpenReq = this.handleClickOpenReq.bind(this);
     this.handleClickOpenCal = this.handleClickOpenCal.bind(this);
@@ -68,38 +62,64 @@ class Absense extends React.Component {
     this.setState({ openCal: false })
   };
 
-  createData(id, name, gheibatha, requests, taghvim) {
-    return { id, name, gheibatha, requests, taghvim };
+  createData(id, name, gheibatha, requests, kolRequests) {
+    return { id, name, gheibatha, requests, kolRequests };
   }
 
   preventDefault(event) {
     event.preventDefault();
   }
 
+  componentDidMount() {
+    console.log(localStorage.getItem('student_id'))
+		const requestOptions = {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ "student_id": localStorage.getItem('student_id') }),
+		};
+		fetch('http://localhost:3030/requestsCount', requestOptions)
+			.then(async response => {
+				const data = await response.json();
+				if (!response.ok) {
+					const error = (data && data.message) || response.status;
+					return Promise.reject(error);
+        }
+        console.log(data)
+        // const maghadir = data.map(l => Object.assign({}, l))
+        // console.log(maghadir)
+        this.setState({requestsNum: data.count})
+			})
+			.catch(error => {
+				this.setState({ errorMessage: error.toString() });
+				console.error('There was an error!', error);
+			});
+  }
+
   render() {
-    // console.log(localStorage.getItem('names')[0].student_name)
+    console.log(localStorage.getItem('student_id'))
     const { classes } = this.props;
     var i;
+    const rows = []
     for(i = 0; i < this.props.data.names.length; i++){
-      this.state.rows.push(
-        this.createData(i, this.props.data.names[i].student_name +" "+ this.props.data.names[i].student_family, '2', '-', 'مشاهده تقویم'),
+      rows.push(
+        this.createData(i, this.props.data.names[i].student_name +" "+ this.props.data.names[i].student_family, this.state.requestsNum, '-', '2'),
       );
     }
     return (
       <React.Fragment>
         <Title style={{ textAlign: 'center', alignItems: 'center' }}>تعداد جلسات برگزار شده: ۱۸</Title>
-        <Table size="small">
+        <Table style={{ height: "200px", maxHeight: "300px"}}>
           <TableHead>
             <TableRow style={{ alignItems: 'center' }}>
               <TableCell className={classes.font} style={{ textAlign: 'center', fontWeight: 'bold' }}>ردیف</TableCell>
               <TableCell className={classes.font} style={{ textAlign: 'center', fontWeight: 'bold' }}>نام دانشجو</TableCell>
               <TableCell className={classes.font} style={{ textAlign: 'center', fontWeight: 'bold' }}>تعداد غیبت</TableCell>
               <TableCell className={classes.font} style={{ textAlign: 'center', fontWeight: 'bold' }}>تعداد درخواست‌های بی‌پاسخ</TableCell>
-              <TableCell className={classes.font} style={{ textAlign: 'center', fontWeight: 'bold' }}>مشاهده غیبت‌ها روی تقویم</TableCell>
+              <TableCell className={classes.font} style={{ textAlign: 'center', fontWeight: 'bold' }}>تعداد کل درخواست‌ها</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {this.state.rows.map(row => (
+            {rows.map(row => (
               <TableRow key={row.id}>
                 <TableCell className={classes.NumberFont} style={{ textAlign: 'center' }}>{row.id + 1}</TableCell>
                 <TableCell className={classes.font} style={{ textAlign: 'center' }}>
@@ -107,54 +127,9 @@ class Absense extends React.Component {
                     {row.name}
                   </Link>
                 </TableCell>
-                {/* <TableCell className={classes.font} style={{ textAlign: 'center' }}>
-                  <Link style={{textDecoration: 'none', cursor:'pointer'}} to={{pathname:"/StudentDetails" , data: row.name}}>
-                    {row.family}
-                  </Link>
-                </TableCell> */}
-                <TableCell className={classes.font} style={{ textAlign: 'center' }}>{row.gheibatha}</TableCell>
-                {/* <TableCell className={classes.font} style={{ textAlign: 'center' }}>
-                  <Button style={{ cursor: 'pointer', fontFamily: 'Shabnam' }} onClick={this.handleClickOpenReq}>{row.status}</Button>
-                  <Dialog
-                    open={this.state.openReq}
-                    onClose={this.handleCloseReq}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                  >
-                    <DialogContent>
-                      <DialogContentText id="alert-dialog-description" style={{ fontFamily: "Shabnam" }}>
-                        "هیچ درخواستی ثبت نشده"
-                              </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                      <Button onClick={this.handleCloseReq} color="primary" autoFocus style={{ fontFamily: "Shabnam" }}>
-                        بستن
-                          </Button>
-                    </DialogActions>
-                  </Dialog>
-                </TableCell> */}
-                <TableCell className={classes.font} style={{ textAlign: 'center' }}>{row.requests}</TableCell>
-                <TableCell className={classes.font} style={{ textAlign: 'center' }}>
-                  <Button style={{ cursor: 'pointer', fontFamily: 'Shabnam' }} onClick={this.handleClickOpenCal}>{row.taghvim}</Button>
-                  <Dialog
-                    open={this.state.openCal}
-                    onClose={this.handleCloseCal}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                  >
-                    <DialogContent>
-                      <DialogContentText id="alert-dialog-description" style={{ fontFamily: "Shabnam" }}>
-                        <Demo />
-                      </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                      <Button onClick={this.handleCloseCal} color="primary" autoFocus style={{ fontFamily: "Shabnam" }}>
-                        بستن
-                      </Button>
-                    </DialogActions>
-                  </Dialog>
-                </TableCell>
-
+                <TableCell className={classes.NumberFont} style={{ textAlign: 'center' }}>{row.gheibatha}</TableCell>
+                <TableCell className={classes.NumberFont} style={{ textAlign: 'center' }}>{row.requests}</TableCell>
+                <TableCell className={classes.NumberFont} style={{ textAlign: 'center' }}>{row.kolRequests}</TableCell>
               </TableRow>
             ))}
           </TableBody>

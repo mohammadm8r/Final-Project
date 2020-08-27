@@ -18,13 +18,14 @@ import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined';
 import CancelOutlinedIcon from '@material-ui/icons/CancelOutlined';
+import TextField from '@material-ui/core/TextField';
 import Image from 'material-ui-image'
 import ClassPhoto from "../../students-in-classroom.jpg";
 import Avatar from "@material-ui/core/Avatar";
 import Profile from "../../Profile.jpg";
-import ReactHTMLTableToExcel from 'react-html-table-to-excel';  
-
+import { Resizable, ResizableBox } from 'react-resizable';
 import Demo from '../../Global Components/calendar'
+import { DialogTitle } from '@material-ui/core';
 
 // Generate Order Data
 
@@ -34,12 +35,6 @@ const useStyles = theme => ({
   },
   font: {
     fontFamily: 'Shabnam',
-  },
-  tableExcel: {
-    fontFamily: 'Shabnam',
-    width: '55px',
-    alignItems: "center",
-    
   },
 });
 
@@ -52,7 +47,6 @@ class StudentAbsenseInfo extends React.Component {
       openAvatar: false,
       rows: [],
     }
-
     
 
     this.handleClickOpenReq = this.handleClickOpenReq.bind(this);
@@ -96,18 +90,19 @@ class StudentAbsenseInfo extends React.Component {
   }
 
   render() {
-    console.log(this.props.data.names[0])
     const { classes } = this.props;
-    const rows = [];
+    console.log(this.props.data.names.length)
+    const rows = []
     for(var i = 0 ; i < this.props.data.names.length; i++){
+      console.log(this.props.data.names[i].attendance_status)
       rows.push(
-        this.createData(i, this.props.data.names[i].session_date, this.props.data.names[i].attendance_matn, 'مشاهده درخواست‌ها', 'مشاهده عکس کلاس', 'مشاهده عکس دانشجو'),
+        this.createData(i, this.props.data.names[i].session_date, this.props.data.names[i].attendance_matn, 'ثبت درخواست', 'مشاهده عکس کلاس', 'مشاهده عکس دانشجو'),
       );
     }
     return (
       <React.Fragment>
-        <Title style={{ textAlign: 'center', alignItems: 'center' }}>{localStorage.getItem('student_name')}</Title>
-        <Table size='small' id="emp">
+        {/* <Title style={{ textAlign: 'center', alignItems: 'center' }}>{this.props.data}</Title> */}
+        <Table size="small">
           <TableHead>
             <TableRow style={{ alignItems: 'center' }}>
               <TableCell className={classes.font} style={{ textAlign: 'center', fontWeight: 'bold' }}>ردیف</TableCell>
@@ -128,13 +123,6 @@ class StudentAbsenseInfo extends React.Component {
                 <TableCell className={classes.font} style={{ textAlign: 'center' }}>
                   <div style={{ display: "flex", flexDirection:"row", alignItems: "center", justifyContent: "center"}}>
                     {row.status}
-                    <CheckCircleOutlineOutlinedIcon color="action" fontSize="small" 
-                      style={{ marginLeft: "10px", marginRight:"10px", cursor:"pointer" }}
-                    />
-                    <CancelOutlinedIcon color="disabled" fontSize="small"
-                     style={{ marginLeft: "10px", marginRight:"4px", cursor:"pointer" }}
-                     onClick={this.props.handleChange(row.status)}
-                    />
                   </div>
                 </TableCell>
 
@@ -148,8 +136,17 @@ class StudentAbsenseInfo extends React.Component {
                       aria-describedby="alert-dialog-description"
                     >
                       <DialogContent>
-                        <DialogContentText id="alert-dialog-description" style={{ fontFamily: "Shabnam" }}>
-                          "هیچ درخواستی ثبت نشده"
+                        <Image src={ClassPhoto} />
+                      </DialogContent>
+                      <DialogTitle>
+                        <TextField id="standard-basic" style={{fontFamily: 'Shabnam'}} placeholder="شماره عکس" />
+                      </DialogTitle>
+                      <DialogContent>
+                        <DialogContentText>
+                          <button style={{fontFamily: 'Shabnam'}}>درخواست ثبت حضور</button>
+                        </DialogContentText>
+                        <DialogContentText>
+                          <button style={{fontFamily: 'Shabnam'}}>درخواست ثبت غیبت</button>
                         </DialogContentText>
                       </DialogContent>
                       <DialogActions>
@@ -158,12 +155,6 @@ class StudentAbsenseInfo extends React.Component {
                         </Button>
                       </DialogActions>
                     </Dialog>
-                    <CheckCircleOutlineOutlinedIcon color="action" fontSize="small" 
-                      style={{ marginLeft: "10px", marginRight:"4px", cursor:"pointer" }}
-                    />
-                    <CancelOutlinedIcon color="disabled" fontSize="small" 
-                      style={{ marginLeft: "10px", marginRight:"4px", cursor:"pointer" }}
-                    />
                   </div>
                   </TableCell>
 
@@ -214,13 +205,6 @@ class StudentAbsenseInfo extends React.Component {
             ))}
           </TableBody>
         </Table>
-        <ReactHTMLTableToExcel 
-          className = {classes.tableExcel}
-          table = "emp"
-          filename = "ReportExcel"
-          sheet = "Sheet"
-          buttonText = "خروجی"
-        />
       </React.Fragment>
     );
   }

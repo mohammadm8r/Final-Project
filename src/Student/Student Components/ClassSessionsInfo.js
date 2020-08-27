@@ -22,7 +22,6 @@ import Image from 'material-ui-image'
 import ClassPhoto from "../../students-in-classroom.jpg";
 import Avatar from "@material-ui/core/Avatar";
 import Profile from "../../Profile.jpg";
-import ReactHTMLTableToExcel from 'react-html-table-to-excel';  
 
 import Demo from '../../Global Components/calendar'
 
@@ -35,12 +34,6 @@ const useStyles = theme => ({
   font: {
     fontFamily: 'Shabnam',
   },
-  tableExcel: {
-    fontFamily: 'Shabnam',
-    width: '55px',
-    alignItems: "center",
-    
-  },
 });
 
 class StudentAbsenseInfo extends React.Component {
@@ -51,9 +44,15 @@ class StudentAbsenseInfo extends React.Component {
       openPhoto: false,
       openAvatar: false,
       rows: [],
+      meghdar: "2",
+      status: 'حاضر',
     }
 
-    
+    this.state.rows.push(
+      this.createData(0, '۲۲/۴/۱۳۹۹', this.state.status, this.state.meghdar+ " "+"درخواست بی‌پاسخ ", 'مشاهده عکس کلاس', 'مشاهده عکس دانشجو '),
+      this.createData(1, '۲۵/۴/۱۳۹۹', 'حاضر', 'یک درخواست‌ بی‌پاسخ', 'مشاهده عکس کلاس', 'مشاهده عکس دانشجو'),
+      this.createData(2, '۲۹/۴/۱۳۹۹', 'غایب', 'دو درخواست بی‌پاسخ‌', 'مشاهده عکس کلاس', 'مشاهده عکس دانشجو'),
+    );
 
     this.handleClickOpenReq = this.handleClickOpenReq.bind(this);
     this.handleClickOpenPhoto = this.handleClickOpenPhoto.bind(this);
@@ -96,18 +95,12 @@ class StudentAbsenseInfo extends React.Component {
   }
 
   render() {
-    console.log(this.props.data.names[0])
     const { classes } = this.props;
-    const rows = [];
-    for(var i = 0 ; i < this.props.data.names.length; i++){
-      rows.push(
-        this.createData(i, this.props.data.names[i].session_date, this.props.data.names[i].attendance_matn, 'مشاهده درخواست‌ها', 'مشاهده عکس کلاس', 'مشاهده عکس دانشجو'),
-      );
-    }
+
     return (
       <React.Fragment>
-        <Title style={{ textAlign: 'center', alignItems: 'center' }}>{localStorage.getItem('student_name')}</Title>
-        <Table size='small' id="emp">
+        <Title style={{ textAlign: 'center', alignItems: 'center' }}>{this.props.data}</Title>
+        <Table size="small">
           <TableHead>
             <TableRow style={{ alignItems: 'center' }}>
               <TableCell className={classes.font} style={{ textAlign: 'center', fontWeight: 'bold' }}>ردیف</TableCell>
@@ -119,11 +112,11 @@ class StudentAbsenseInfo extends React.Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map(row => (
+            {this.state.rows.map(row => (
               <TableRow key={row.id}>
                 <TableCell className={classes.NumberFont} style={{ textAlign: 'center' }}>{row.id + 1}</TableCell>
 
-                <TableCell className={classes.NumberFont} style={{ textAlign: 'center' }}>{row.date}</TableCell>
+                <TableCell className={classes.font} style={{ textAlign: 'center' }}>{row.date}</TableCell>
 
                 <TableCell className={classes.font} style={{ textAlign: 'center' }}>
                   <div style={{ display: "flex", flexDirection:"row", alignItems: "center", justifyContent: "center"}}>
@@ -133,8 +126,25 @@ class StudentAbsenseInfo extends React.Component {
                     />
                     <CancelOutlinedIcon color="disabled" fontSize="small"
                      style={{ marginLeft: "10px", marginRight:"4px", cursor:"pointer" }}
-                     onClick={this.props.handleChange(row.status)}
+                     onClick={this.handleClickOpenReq}
                     />
+                    <Dialog
+                      open={this.state.openReq}
+                      onClose={this.handleCloseReq}
+                      aria-labelledby="alert-dialog-title"
+                      aria-describedby="alert-dialog-description"
+                    >
+                      <DialogContent>
+                        <DialogContentText id="alert-dialog-description" style={{ fontFamily: "Shabnam" }}>
+                          "هیچ درخواستی ثبت نشده"
+                        </DialogContentText>
+                      </DialogContent>
+                      <DialogActions>
+                        <Button onClick={this.handleCloseReq} color="primary" autoFocus style={{ fontFamily: "Shabnam" }}>
+                          بستن
+                        </Button>
+                      </DialogActions>
+                    </Dialog>
                   </div>
                 </TableCell>
 
@@ -214,13 +224,6 @@ class StudentAbsenseInfo extends React.Component {
             ))}
           </TableBody>
         </Table>
-        <ReactHTMLTableToExcel 
-          className = {classes.tableExcel}
-          table = "emp"
-          filename = "ReportExcel"
-          sheet = "Sheet"
-          buttonText = "خروجی"
-        />
       </React.Fragment>
     );
   }

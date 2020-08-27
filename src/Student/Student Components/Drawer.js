@@ -227,10 +227,7 @@ class SideBar extends React.Component {
 							component="h2"
 							className={classes.details}
 						>
-							شماره دانشجویی:
-						</Typography>
-						<Typography className={classes.pos} color="textSecondary">
-							۹۴۳۱۰۴۰
+							<button>مشاهده درخواست‌های گذشته</button>
 						</Typography>
 					</CardContent>
 					<CardContent className={classes.cardCont}>
@@ -239,25 +236,10 @@ class SideBar extends React.Component {
 							component="h2"
 							className={classes.details}
 						>
-							نیمسال:
-						</Typography>
-						<Typography className={classes.pos} color="textSecondary">
-							دوم-۹۸
+							<button>لیست کلاس‌ها</button>
 						</Typography>
 					</CardContent>
-					<CardContent className={classes.cardCont}>
-						<Typography
-							variant="h5"
-							component="h2"
-							className={classes.details}
-						>
-							تعداد واحد این ترم:
-						</Typography>
-						<Typography className={classes.pos} color="textSecondary">
-							۱۸
-						</Typography>
-					</CardContent>
-					<CardActions dir="ltr">
+					{/* <CardActions dir="ltr">
 						<Button size="small" className={classes.pos} variant="outlined" color="primary" onClick={this.handleClickOpen}>
 							...اطلاعات بیشتر
 						</Button>
@@ -267,7 +249,7 @@ class SideBar extends React.Component {
 							aria-labelledby="alert-dialog-title"
 							aria-describedby="alert-dialog-description"
 						>
-							{/* <DialogTitle id="alert-dialog-title">{"اطلاعات تکمیلی"}</DialogTitle> */}
+							<DialogTitle id="alert-dialog-title">{"اطلاعات تکمیلی"}</DialogTitle> *
 							<DialogContent>
 								<DialogContentText id="alert-dialog-description" style={{fontFamily: "Shabnam"}}>
 									شما محمد رضایی دانشجوی ترم ۵ هستید، گفتم در جریان باشی
@@ -279,7 +261,7 @@ class SideBar extends React.Component {
 							</Button>
 							</DialogActions>
 						</Dialog>
-					</CardActions>
+					</CardActions> */}
 				</Card>
 			</Drawer>
 		</StylesProvider>

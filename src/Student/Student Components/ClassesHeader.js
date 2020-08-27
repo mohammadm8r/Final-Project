@@ -11,8 +11,9 @@ import MailIcon from "@material-ui/icons/Mail";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import { pink, blue } from "@material-ui/core/colors";
 import { withStyles } from '@material-ui/core/styles'
-import Logo from "./logo_fa.png";
+import Logo from "../../Master/Master Components/logo_fa.png";
 import { Avatar } from "@material-ui/core";
+import {Link} from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -183,14 +184,17 @@ class Header extends React.Component {
 						<Typography className={classes.title} variant="h6" noWrap>
 							{this.props.data}
 						</Typography>
-						<IconButton aria-label="show 17 new notifications" color="inherit">
+						{/* <IconButton aria-label="show 17 new notifications" color="inherit">
+							<Avatar>H</Avatar>
 							<Badge badgeContent={1} color="secondary">
 								<NotificationsIcon />
 							</Badge>
-						</IconButton>
-						<IconButton color="inherit">
-							<PowerSettingsNewIcon />
-						</IconButton>
+						</IconButton> */}
+						<Link to={{pathname:"/"}} style={{color: 'inherit'}}>
+							<IconButton color="inherit">
+								<PowerSettingsNewIcon />
+							</IconButton>
+						</Link>
 					</div>
 				</Toolbar>
 			</AppBar>

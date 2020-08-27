@@ -14,12 +14,12 @@ import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import Paper from '@material-ui/core/Paper';
 import Link from '@material-ui/core/Link';
 // import { mainListItems } from './listItems';
-import Absense from './Absense';
+import ClassSessions from './ClassSessions';
 import InsertChartIcon from '@material-ui/icons/InsertChart';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import { withStyles } from '@material-ui/core/styles'
 // import Header from "./components/header";
-import SideBar from "./MasDrawer";
+import SideBar from "./Drawer";
 import ClassesHeader from './ClassesHeader'
 
 const drawerWidth = 240;
@@ -125,22 +125,19 @@ class Student extends React.Component {
   }
 
   componentDidMount() {
-		var i;
 		const requestOptions = {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ "course_title": localStorage.getItem('course_title'), "course_group": localStorage.getItem('course_group')}),
+			body: JSON.stringify({ "username": localStorage.getItem('username'), "course_title": localStorage.getItem('course_title'), "course_group": localStorage.getItem('course_group')}),
 		};
-		fetch('http://localhost:3030/courseStudents/info', requestOptions)
+		fetch('http://localhost:3030/studentSessions', requestOptions)
 			.then(async response => {
 				const data = await response.json();
 				if (!response.ok) {
 					const error = (data && data.message) || response.status;
 					return Promise.reject(error);
         }
-        console.log(data)
         const maghadir = data.map(l => Object.assign({}, l))
-        console.log(maghadir)
         this.setState({names: maghadir})
 			})
 			.catch(error => {
@@ -149,22 +146,22 @@ class Student extends React.Component {
 			});
   }
   render(){
+    console.log(this.state)
     // console.log(this.props.location.data[0])
     const {classes} = this.props;
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-    console.log(this.state)
     return (
       <div className={classes.root}>
         <CssBaseline />
         <ClassesHeader data={localStorage.getItem('course_title')}/>
-        <SideBar />
+        {/* <SideBar /> */}
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
           <Container maxWidth="lg" className={classes.container}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <Paper className={classes.paper}>
-                  <Absense data={this.state}/>
+                  <ClassSessions data={this.state}/>
                 </Paper>
               </Grid>
             </Grid>

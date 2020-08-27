@@ -5,6 +5,7 @@ import MasDashboard from "./Master/MasterDashboard.js"
 import AbsensePanel from "./Master/Master Components/MasClasses.js"
 import SignIn from "./Registration/LoginPage"
 import StudentDetails from './Master/Master Components/StudentDetails';
+import StudentClasses from './Student/Student Components/StudentClasses';
 
 import {
     BrowserRouter as Router,
@@ -24,6 +25,7 @@ class App extends Component {
             <Route exact path="/StuDashboard" component={StuDashboard} />
             <Route exact path="/MasClasses" component={AbsensePanel} />
             <Route exact path="/StudentDetails" component={StudentDetails} />
+            <Route exact path="/StudentClasses" component={StudentClasses} />
           </Switch>
         </div>
       </Router>

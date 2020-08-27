@@ -116,7 +116,6 @@ class Student extends React.Component {
     super(props);
     this.state = {
       names: [],
-      // familyes:[]
     }
     if(this.props.location.data){
       localStorage.setItem('course_title', this.props.location.data[0])
@@ -125,7 +124,6 @@ class Student extends React.Component {
   }
 
   componentDidMount() {
-		var i;
 		const requestOptions = {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
@@ -149,7 +147,7 @@ class Student extends React.Component {
 			});
   }
   render(){
-    // console.log(this.props.location.data[0])
+    // localStorage.setItem('student_id', this.state.names[0].student_id)
     const {classes} = this.props;
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
     console.log(this.state)
@@ -157,7 +155,7 @@ class Student extends React.Component {
       <div className={classes.root}>
         <CssBaseline />
         <ClassesHeader data={localStorage.getItem('course_title')}/>
-        <SideBar />
+        {/* <SideBar /> */}
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
           <Container maxWidth="lg" className={classes.container}>

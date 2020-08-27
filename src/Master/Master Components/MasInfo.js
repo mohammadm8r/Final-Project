@@ -57,8 +57,9 @@ class Info extends React.Component {
   
   render(){
     var i;
+    const kooft = []
     for(i = 0; i < Object.values(this.props.data.course_titles).length; i++){
-      this.state.rows.push(
+      kooft.push(
         this.createData(i, this.props.data.course_titles[i], this.props.data.course_groups[i], this.props.data.course_days[i]),
       );
     }
@@ -67,7 +68,7 @@ class Info extends React.Component {
     return (
       <React.Fragment>
         <Title style={{ textAlign: 'center' }}>کلاس‌های ترم جاری</Title>
-        <Table size="small">
+        <Table style={{ height: "300px", maxHeight: "300px"}}>
           <TableHead>
             <TableRow>
             <TableCell className={classes.font} style={{ textAlign: 'center' }}>ردیف</TableCell>
@@ -77,7 +78,7 @@ class Info extends React.Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {this.state.rows.map(row => (
+            {kooft.map(row => (
               <TableRow key={row.id} rowNumber = {row.id}>
                 <TableCell className={classes.NumberFont} style={{ textAlign: 'center' }}> {row.id + 1} </TableCell>
                 <TableCell className={classes.font} style={{ textAlign: 'center' }} onClick={this.changeClass}>

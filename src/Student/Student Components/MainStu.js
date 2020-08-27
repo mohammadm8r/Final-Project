@@ -213,11 +213,17 @@ class MainPage extends React.Component {
 					const error = (data && data.message) || response.status;
 					return Promise.reject(error);
 				}
-				for(i in data){
-					this.state.course_titles.push(data[i].course_title)
-					this.state.course_groups.push(data[i].course_group)
-					this.state.course_days.push(data[i].course_days)
+				const s = {
+					course_titles: [],
+					course_groups: [],
+					course_days: [],
 				}
+				for(i in data){
+					s.course_titles.push(data[i].course_title)
+					s.course_groups.push(data[i].course_group)
+					s.course_days.push(data[i].course_days)
+				}
+				this.setState(s)
 			})
 			.catch(error => {
 				this.setState({ errorMessage: error.toString() });
@@ -227,7 +233,7 @@ class MainPage extends React.Component {
 
 	render(){
 		const {classes} = this.props;
-
+		console.log(this.state)
 		return (
 			<main className={classes.contentt}>
 				<div className={classes.appBarSpacer} />

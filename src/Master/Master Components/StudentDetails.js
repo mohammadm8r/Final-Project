@@ -116,12 +116,60 @@ class StudentDetails extends React.Component {
     constructor(props){
         super(props);
         this.state = {
+          names: []
         }
         if(this.props.location.data){
           localStorage.setItem('student_name', this.props.location.data)
         }
-        console.log(this.props.data)
+        this.changeStatus = this.changeStatus.bind(this);
       }
+
+      componentDidMount() {
+        const requestOptions = {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ "username": localStorage.getItem('student_name'), "course_title": localStorage.getItem('course_title'), "course_group": localStorage.getItem('course_group')}),
+        };
+        fetch('http://localhost:3030/studentSessions', requestOptions)
+          .then(async response => {
+            const data = await response.json();
+            console.log(data)
+            if (!response.ok) {
+              const error = (data && data.message) || response.status;
+              return Promise.reject(error);
+            }
+            const maghadir = data.map(l => Object.assign({}, l))
+            this.setState({names: maghadir})
+          })
+          .catch(error => {
+            this.setState({ errorMessage: error.toString() });
+            console.error('There was an error!', error);
+          });
+      }
+
+      changeStatus(a){
+        // const requestOptions = {
+        //   method: 'POST',
+        //   headers: { 'Content-Type': 'application/json' },
+        //   body: JSON.stringify({ "username": localStorage.getItem('student_name'), "course_title": localStorage.getItem('course_title'), "course_group": localStorage.getItem('course_group')}),
+        // };
+        // fetch('http://localhost:3030/studentSessions', requestOptions)
+        //   .then(async response => {
+        //     const data = await response.json();
+        //     console.log(data)
+        //     if (!response.ok) {
+        //       const error = (data && data.message) || response.status;
+        //       return Promise.reject(error);
+        //     }
+        //     const maghadir = data.map(l => Object.assign({}, l))
+        //     this.setState({names: maghadir})
+        //   })
+        //   .catch(error => {
+        //     this.setState({ errorMessage: error.toString() });
+        //     console.error('There was an error!', error);
+        //   });
+      }
+
       render(){
         console.log(this.props.location)
         const {classes} = this.props;
@@ -131,14 +179,14 @@ class StudentDetails extends React.Component {
           <div className={classes.root}>
             <CssBaseline />
             <ClassesHeader />
-            <SideBar />
+            {/* <SideBar /> */}
             <main className={classes.content}>
               <div className={classes.appBarSpacer} />
               <Container maxWidth="lg" className={classes.container}>
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
                     <Paper className={classes.paper}>
-                      <StudentAbsenseInfo  data={localStorage.getItem('student_name')}/>
+                      <StudentAbsenseInfo handleChange={this.changeStatus} data={this.state}/>
                     </Paper>
                   </Grid>
                 </Grid>
