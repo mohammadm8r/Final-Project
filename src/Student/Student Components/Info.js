@@ -31,36 +31,18 @@ class Info extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // nameClass: this.createData.name_of_class,
       rows: [],
-      // open: false,
-      // Calendrows: []
     }
-
-    // this.state.rows.push(
-    //   this.createData(0, 'برنامه‌نویسی پیشرفته', 2, 'شنبه - دوشنبه'),
-    // );
 
     this.createData = this.createData.bind(this);
     this.handleClickOpen = this.handleClickOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
-    // this.showData = this.showData.bind(this);
     
   }
 
   createData(id, name_of_class, class_group, class_time) {
     return { id, name_of_class, class_group, class_time };
   }
-
-  // showData(){
-  //   const {rows} = this.state;
-  //   for(var i = 0; i < Object.values(this.props.data.course_titles).length; i++){
-  //     rows.push(
-  //       this.createData(i, this.props.data.course_titles[i], this.props.data.course_groups[i], this.props.data.course_days[i]),
-  //     );
-  //   }
-  //   this.setState({rows})
-  // }
 
   preventDefault(event) {
     event.preventDefault();
@@ -74,21 +56,8 @@ class Info extends React.Component {
     this.setState({ open: false })
   };
 
-  // componentDidMount(){
-  //   const {rows} = this.state;
-  //   if(this.props.data){
-  //     for(var i = 0; i < Object.values(this.props.data.course_titles).length; i++){
-  //       rows.push(
-  //         this.createData(i, this.props.data.course_titles[i], this.props.data.course_groups[i], this.props.data.course_days[i]),
-  //       );
-  //     }
-  //     this.setState({rows})
-  //   } 
-  // }
-
   render() {
     const { classes } = this.props;
-    // this.rows.length = 0
     const rows = []
     for(var i = 0; i < Object.values(this.props.data.course_titles).length; i++){
       rows.push(

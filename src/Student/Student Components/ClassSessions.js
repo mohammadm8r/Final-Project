@@ -26,7 +26,10 @@ import Profile from "../../Profile.jpg";
 import { Resizable, ResizableBox } from 'react-resizable';
 import Demo from '../../Global Components/calendar'
 import { DialogTitle } from '@material-ui/core';
-
+import Moment from 'react-moment';
+import 'moment-timezone';
+import ShowRequests from './ShowRequests'
+import SendRequests from './SendRequests'
 // Generate Order Data
 
 const useStyles = theme => ({
@@ -36,6 +39,11 @@ const useStyles = theme => ({
   font: {
     fontFamily: 'Shabnam',
   },
+  text: {
+    '&::placeholder' : {
+      fontFamily: 'Shabnam',
+    } 
+  }
 });
 
 class StudentAbsenseInfo extends React.Component {
@@ -44,25 +52,35 @@ class StudentAbsenseInfo extends React.Component {
     this.state = {
       openReq: false,
       openPhoto: false,
+      openTrace: false,
       openAvatar: false,
       rows: [],
+      selected_row: {},
     }
     
-
     this.handleClickOpenReq = this.handleClickOpenReq.bind(this);
+    this.handleClickOpenTraceRequests = this.handleClickOpenTraceRequests.bind(this);
     this.handleClickOpenPhoto = this.handleClickOpenPhoto.bind(this);
     this.handleClickOpenAvatar = this.handleClickOpenAvatar.bind(this);
     this.handleCloseReq = this.handleCloseReq.bind(this);
     this.handleClosePhoto = this.handleClosePhoto.bind(this);
     this.handleCloseAvatar = this.handleCloseAvatar.bind(this);
+    this.handleCloseTrace = this.handleCloseTrace.bind(this);
   }
 
-  createData(id, date, status, requests, classPhoto, StuPhoto) {
-    return { id, date, status, requests, classPhoto, StuPhoto };
+  createData(id, date, status, requests, classPhoto, StuPhoto, attendance_id) {
+    return { id, date, status, requests, classPhoto, StuPhoto, attendance_id };
+  }
+  createRequestsData(id, reqDate, reqTitle, reqStatus) {
+    return { id, reqDate, reqTitle, reqStatus };
   }
 
-  handleClickOpenReq(event) {
-    this.setState({ openReq: true })
+  handleClickOpenReq(selected_row) {
+    function selectRow(){
+      this.setState({ openReq: true, selected_row: selected_row})
+    };
+    selectRow = selectRow.bind(this);
+    return selectRow
   }
 
   handleClickOpenPhoto(event) {
@@ -72,7 +90,15 @@ class StudentAbsenseInfo extends React.Component {
   handleClickOpenAvatar(event) {
     this.setState({ openAvatar: true })
   }
-  
+
+  handleClickOpenTraceRequests(selected_row) {
+    function selectRow(){
+      this.setState({ openTrace: true, selected_row: selected_row})
+    };
+    selectRow = selectRow.bind(this);
+    return selectRow
+  }
+
   handleCloseReq(event) {
     this.setState({ openReq: false })
   };
@@ -85,20 +111,33 @@ class StudentAbsenseInfo extends React.Component {
     this.setState({ openAvatar: false })
   };
 
+  handleCloseTrace(event) {
+      this.setState({ openTrace: false })
+  };
+
   preventDefault(event) {
     event.preventDefault();
   }
 
+  requestPost(){
+
+  }
+
   render() {
     const { classes } = this.props;
-    console.log(this.props.data.names.length)
     const rows = []
+    const requestsRows = []
+
+    requestsRows.push(
+      this.createRequestsData()
+    )
     for(var i = 0 ; i < this.props.data.names.length; i++){
-      console.log(this.props.data.names[i].attendance_status)
       rows.push(
-        this.createData(i, this.props.data.names[i].session_date, this.props.data.names[i].attendance_matn, 'ثبت درخواست', 'مشاهده عکس کلاس', 'مشاهده عکس دانشجو'),
+        this.createData(i, this.props.data.names[i].session_date, this.props.data.names[i].attendance_matn,
+           'ثبت درخواست', 'مشاهده عکس کلاس', 'مشاهده عکس دانشجو', this.props.data.names[i].attendance_id),
       );
     }
+
     return (
       <React.Fragment>
         {/* <Title style={{ textAlign: 'center', alignItems: 'center' }}>{this.props.data}</Title> */}
@@ -118,7 +157,11 @@ class StudentAbsenseInfo extends React.Component {
               <TableRow key={row.id}>
                 <TableCell className={classes.NumberFont} style={{ textAlign: 'center' }}>{row.id + 1}</TableCell>
 
-                <TableCell className={classes.NumberFont} style={{ textAlign: 'center' }}>{row.date}</TableCell>
+                <TableCell className={classes.NumberFont} style={{ textAlign: 'center' }}>
+                  <Moment format="YYYY/MM/DD">
+                    {row.date}
+                  </Moment>
+                </TableCell>
 
                 <TableCell className={classes.font} style={{ textAlign: 'center' }}>
                   <div style={{ display: "flex", flexDirection:"row", alignItems: "center", justifyContent: "center"}}>
@@ -128,33 +171,9 @@ class StudentAbsenseInfo extends React.Component {
 
                 <TableCell className={classes.font} style={{ textAlign: 'center'}}>
                   <div style={{ display: "flex", flexDirection:"row", alignItems: "center", justifyContent: "center"}}>
-                    <Button style={{ cursor: 'pointer', fontFamily: 'Shabnam' }} onClick={this.handleClickOpenReq}>{row.requests}</Button>
-                    <Dialog
-                      open={this.state.openReq}
-                      onClose={this.handleCloseReq}
-                      aria-labelledby="alert-dialog-title"
-                      aria-describedby="alert-dialog-description"
-                    >
-                      <DialogContent>
-                        <Image src={ClassPhoto} />
-                      </DialogContent>
-                      <DialogTitle>
-                        <TextField id="standard-basic" style={{fontFamily: 'Shabnam'}} placeholder="شماره عکس" />
-                      </DialogTitle>
-                      <DialogContent>
-                        <DialogContentText>
-                          <button style={{fontFamily: 'Shabnam'}}>درخواست ثبت حضور</button>
-                        </DialogContentText>
-                        <DialogContentText>
-                          <button style={{fontFamily: 'Shabnam'}}>درخواست ثبت غیبت</button>
-                        </DialogContentText>
-                      </DialogContent>
-                      <DialogActions>
-                        <Button onClick={this.handleCloseReq} color="primary" autoFocus style={{ fontFamily: "Shabnam" }}>
-                          بستن
-                        </Button>
-                      </DialogActions>
-                    </Dialog>
+                    <Button style={{ cursor: 'pointer', fontFamily: 'Shabnam' }} onClick={this.handleClickOpenReq({attendance_id: row.attendance_id, class_image: row.class_image})}>{row.requests}</Button>
+                    <div>|</div>
+                    <Button style={{ cursor: 'pointer', fontFamily: 'Shabnam' }} onClick={this.handleClickOpenTraceRequests({attendance_id: row.attendance_id})}>مشاهده درخواست‌ها</Button>
                   </div>
                   </TableCell>
 
@@ -203,8 +222,20 @@ class StudentAbsenseInfo extends React.Component {
                 </TableCell>
               </TableRow>
             ))}
+            
           </TableBody>
         </Table>
+        <SendRequests
+          attendance_id={this.state.selected_row.attendance_id}
+          image={this.state.selected_row.image}
+          open={this.state.openReq}
+          onClose={this.handleCloseReq}
+        />
+        <ShowRequests
+          attendance_id={this.state.selected_row.attendance_id}
+          open={this.state.openTrace}
+          onClose={this.handleCloseTrace}
+        />
       </React.Fragment>
     );
   }

@@ -18,13 +18,17 @@ import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined';
 import CancelOutlinedIcon from '@material-ui/icons/CancelOutlined';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import CancelIcon from '@material-ui/icons/Cancel';
 import Image from 'material-ui-image'
 import ClassPhoto from "../../students-in-classroom.jpg";
 import Avatar from "@material-ui/core/Avatar";
 import Profile from "../../Profile.jpg";
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';  
-
+import Moment from 'react-moment';
+import 'moment-timezone';
 import Demo from '../../Global Components/calendar'
+import ShowRequests from './ShowRequests'
 
 // Generate Order Data
 
@@ -51,6 +55,7 @@ class StudentAbsenseInfo extends React.Component {
       openPhoto: false,
       openAvatar: false,
       rows: [],
+      selected_row: {},
     }
 
     
@@ -63,12 +68,19 @@ class StudentAbsenseInfo extends React.Component {
     this.handleCloseAvatar = this.handleCloseAvatar.bind(this);
   }
 
-  createData(id, date, status, requests, classPhoto, StuPhoto) {
-    return { id, date, status, requests, classPhoto, StuPhoto };
+  createData(id, date, status, requests, classPhoto, StuPhoto, attendance_id) {
+    return { id, date, status, requests, classPhoto, StuPhoto, attendance_id };
   }
-
-  handleClickOpenReq(event) {
-    this.setState({ openReq: true })
+  createRequestsData(id, reqDate, reqTitle, reqStatus) {
+    return { id, reqDate, reqTitle, reqStatus };
+  }
+  
+  handleClickOpenReq(selected_row) {
+    function selectRow(){
+      this.setState({ openReq: true, selected_row: selected_row})
+    };
+    selectRow = selectRow.bind(this);
+    return selectRow
   }
 
   handleClickOpenPhoto(event) {
@@ -99,11 +111,14 @@ class StudentAbsenseInfo extends React.Component {
     console.log(this.props.data.names[0])
     const { classes } = this.props;
     const rows = [];
+    const requestsRows = [];
+
     for(var i = 0 ; i < this.props.data.names.length; i++){
       rows.push(
-        this.createData(i, this.props.data.names[i].session_date, this.props.data.names[i].attendance_matn, 'مشاهده درخواست‌ها', 'مشاهده عکس کلاس', 'مشاهده عکس دانشجو'),
+        this.createData(i, this.props.data.names[i].session_date, this.props.data.names[i].attendance_matn, 'یک درخواست بی‌پاسخ', 'مشاهده عکس کلاس', 'مشاهده عکس دانشجو', this.props.data.names[i].attendance_id),
       );
     }
+
     return (
       <React.Fragment>
         <Title style={{ textAlign: 'center', alignItems: 'center' }}>{localStorage.getItem('student_name')}</Title>
@@ -123,7 +138,11 @@ class StudentAbsenseInfo extends React.Component {
               <TableRow key={row.id}>
                 <TableCell className={classes.NumberFont} style={{ textAlign: 'center' }}>{row.id + 1}</TableCell>
 
-                <TableCell className={classes.NumberFont} style={{ textAlign: 'center' }}>{row.date}</TableCell>
+                <TableCell className={classes.NumberFont} style={{ textAlign: 'center' }}>
+                  <Moment format="YYYY/MM/DD">
+                    {row.date}
+                  </Moment>
+                </TableCell>
 
                 <TableCell className={classes.font} style={{ textAlign: 'center' }}>
                   <div style={{ display: "flex", flexDirection:"row", alignItems: "center", justifyContent: "center"}}>
@@ -139,33 +158,8 @@ class StudentAbsenseInfo extends React.Component {
                 </TableCell>
 
                 <TableCell className={classes.font} style={{ textAlign: 'center'}}>
-                  <div style={{ display: "flex", flexDirection:"row", alignItems: "center", justifyContent: "center"}}>
-                    <Button style={{ cursor: 'pointer', fontFamily: 'Shabnam' }} onClick={this.handleClickOpenReq}>{row.requests}</Button>
-                    <Dialog
-                      open={this.state.openReq}
-                      onClose={this.handleCloseReq}
-                      aria-labelledby="alert-dialog-title"
-                      aria-describedby="alert-dialog-description"
-                    >
-                      <DialogContent>
-                        <DialogContentText id="alert-dialog-description" style={{ fontFamily: "Shabnam" }}>
-                          "هیچ درخواستی ثبت نشده"
-                        </DialogContentText>
-                      </DialogContent>
-                      <DialogActions>
-                        <Button onClick={this.handleCloseReq} color="primary" autoFocus style={{ fontFamily: "Shabnam" }}>
-                          بستن
-                        </Button>
-                      </DialogActions>
-                    </Dialog>
-                    <CheckCircleOutlineOutlinedIcon color="action" fontSize="small" 
-                      style={{ marginLeft: "10px", marginRight:"4px", cursor:"pointer" }}
-                    />
-                    <CancelOutlinedIcon color="disabled" fontSize="small" 
-                      style={{ marginLeft: "10px", marginRight:"4px", cursor:"pointer" }}
-                    />
-                  </div>
-                  </TableCell>
+                    <Button style={{ cursor: 'pointer', fontFamily: 'Shabnam' }} onClick={this.handleClickOpenReq({attendance_id: row.attendance_id})}>{row.requests}</Button>
+                </TableCell>
 
                 <TableCell className={classes.font} style={{ textAlign: 'center' }}>
                   <Image src={ClassPhoto} onClick={this.handleClickOpenPhoto} style={{ cursor: 'pointer'}}/>
@@ -220,6 +214,11 @@ class StudentAbsenseInfo extends React.Component {
           filename = "ReportExcel"
           sheet = "Sheet"
           buttonText = "خروجی"
+        />
+        <ShowRequests
+          attendance_id={this.state.selected_row.attendance_id}
+          openReq={this.state.openReq}
+          onClose={this.handleCloseReq}
         />
       </React.Fragment>
     );
