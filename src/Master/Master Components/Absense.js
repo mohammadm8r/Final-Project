@@ -37,7 +37,7 @@ class Absense extends React.Component {
       openReq: false,
       openCal: false,
       rows: [],
-      requestsNum: 0,
+      requestsNum: Array(this.props.data.names.length),
     }
 
     this.handleClickOpenReq = this.handleClickOpenReq.bind(this);
@@ -70,39 +70,47 @@ class Absense extends React.Component {
     event.preventDefault();
   }
 
-  componentDidMount() {
-    console.log(localStorage.getItem('student_id'))
-		const requestOptions = {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ "student_id": localStorage.getItem('student_id') }),
-		};
-		fetch('http://localhost:3030/requestsCount', requestOptions)
-			.then(async response => {
-				const data = await response.json();
-				if (!response.ok) {
-					const error = (data && data.message) || response.status;
-					return Promise.reject(error);
-        }
-        console.log(data)
-        // const maghadir = data.map(l => Object.assign({}, l))
-        // console.log(maghadir)
-        this.setState({requestsNum: data.count})
-			})
-			.catch(error => {
-				this.setState({ errorMessage: error.toString() });
-				console.error('There was an error!', error);
-			});
+  componentDidUpdate(prevProps) {
+    if(prevProps.data.names.length == this.props.data.names.length)
+      return
+    for(let i = 0; i < this.props.data.names.length; i++){
+      console.log(localStorage.getItem('student_id'))
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ "student_id": this.props.data.names[i].student_id }),
+      };
+      fetch('http://localhost:3030/requestsCount', requestOptions)
+        .then(async response => {
+          const data = await response.json();
+          if (!response.ok) {
+            const error = (data && data.message) || response.status;
+            return Promise.reject(error);
+          }
+          console.log(data)
+          this.setState(
+            (prevState) => {
+              prevState.requestsNum[i] = data.count
+              return {requestsNum: [...prevState.requestsNum]}
+            }
+          )
+        })
+        .catch(error => {
+          this.setState({ errorMessage: error.toString() });
+          console.error('There was an error!', error);
+        });
+    }
+    
   }
 
   render() {
-    console.log(localStorage.getItem('student_id'))
+    console.log(this.state.requestsNum)
     const { classes } = this.props;
     var i;
     const rows = []
     for(i = 0; i < this.props.data.names.length; i++){
       rows.push(
-        this.createData(i, this.props.data.names[i].student_name +" "+ this.props.data.names[i].student_family, this.state.requestsNum, '-', '2'),
+        this.createData(i, this.props.data.names[i].student_name +" "+ this.props.data.names[i].student_family, '2', '-', this.state.requestsNum[i]),
       );
     }
     return (

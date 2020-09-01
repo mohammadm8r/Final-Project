@@ -147,27 +147,46 @@ class StudentDetails extends React.Component {
           });
       }
 
-      changeStatus(a){
-        // const requestOptions = {
-        //   method: 'POST',
-        //   headers: { 'Content-Type': 'application/json' },
-        //   body: JSON.stringify({ "username": localStorage.getItem('student_name'), "course_title": localStorage.getItem('course_title'), "course_group": localStorage.getItem('course_group')}),
-        // };
-        // fetch('http://localhost:3030/studentSessions', requestOptions)
-        //   .then(async response => {
-        //     const data = await response.json();
-        //     console.log(data)
-        //     if (!response.ok) {
-        //       const error = (data && data.message) || response.status;
-        //       return Promise.reject(error);
-        //     }
-        //     const maghadir = data.map(l => Object.assign({}, l))
-        //     this.setState({names: maghadir})
-        //   })
-        //   .catch(error => {
-        //     this.setState({ errorMessage: error.toString() });
-        //     console.error('There was an error!', error);
-        //   });
+      changeStatus(attendance_id, attendance_new_status){
+        const requestOptions = {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ "attendance_id": attendance_id, "attendance_new_status": attendance_new_status}),
+        };
+        fetch('http://localhost:3030/updateAttendance/change', requestOptions)
+          .then(async response => {
+            const data = await response.json();
+            console.log(data)
+            if (!response.ok) {
+              const error = (data && data.message) || response.status;
+              return Promise.reject(error);
+            }
+          })
+          .catch(error => {
+            this.setState({ errorMessage: error.toString() });
+            console.error('There was an error!', error);
+          });
+          
+          const updateOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ "username": localStorage.getItem('student_name'), "course_title": localStorage.getItem('course_title'), "course_group": localStorage.getItem('course_group')}),
+          };
+          fetch('http://localhost:3030/studentSessions', updateOptions)
+          .then(async response => {
+            const data = await response.json();
+            console.log(data)
+            if (!response.ok) {
+              const error = (data && data.message) || response.status;
+              return Promise.reject(error);
+            }
+            const maghadir = data.map(l => Object.assign({}, l))
+            this.setState({names: maghadir})
+          })
+          .catch(error => {
+            this.setState({ errorMessage: error.toString() });
+            console.error('There was an error!', error);
+          });
       }
 
       render(){

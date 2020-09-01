@@ -119,9 +119,6 @@ class StudentAbsenseInfo extends React.Component {
     event.preventDefault();
   }
 
-  requestPost(){
-
-  }
 
   render() {
     const { classes } = this.props;

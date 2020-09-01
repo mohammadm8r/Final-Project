@@ -66,6 +66,8 @@ class StudentAbsenseInfo extends React.Component {
     this.handleCloseReq = this.handleCloseReq.bind(this);
     this.handleClosePhoto = this.handleClosePhoto.bind(this);
     this.handleCloseAvatar = this.handleCloseAvatar.bind(this);
+    this.handleClickChangeStatusOnTick = this.handleClickChangeStatusOnTick.bind(this);
+    this.handleClickChangeStatusOnCross = this.handleClickChangeStatusOnCross.bind(this);
   }
 
   createData(id, date, status, requests, classPhoto, StuPhoto, attendance_id) {
@@ -81,6 +83,44 @@ class StudentAbsenseInfo extends React.Component {
     };
     selectRow = selectRow.bind(this);
     return selectRow
+  }
+
+  handleClickChangeStatusOnTick(selected_row) {
+    function selectRow(){
+      this.setState({ openReq: true, selected_row: selected_row})
+    };
+    selectRow = selectRow.bind(this);
+    // switch(this.state.selected_row.attendance_status){
+    //   case 'حاضر':
+    //     selected_row.attendance_status = 2
+    //     break;
+    //   case 'غایب':
+    //     selected_row.attendance_status = 5
+    //     break;
+    //   default:
+    //     selected_row.attendance_status = 0
+    // }
+    return () => {
+      this.props.handleChange(selected_row.attendance_id, selected_row.attendance_status)
+    }
+  }
+
+  handleClickChangeStatusOnCross(attendance_id, attendance_status) {
+    console.log(attendance_id)
+    let attendance_new_status = 0
+    switch(attendance_status){
+      case 'حاضر':
+        attendance_new_status = 6
+        break;
+      case 'غایب':
+        attendance_new_status = 3
+        break;
+      default:
+        attendance_new_status = 0
+    }
+    return () => {
+      this.props.handleChange(attendance_id, attendance_new_status)
+    }
   }
 
   handleClickOpenPhoto(event) {
@@ -108,7 +148,6 @@ class StudentAbsenseInfo extends React.Component {
   }
 
   render() {
-    console.log(this.props.data.names[0])
     const { classes } = this.props;
     const rows = [];
     const requestsRows = [];
@@ -149,10 +188,11 @@ class StudentAbsenseInfo extends React.Component {
                     {row.status}
                     <CheckCircleOutlineOutlinedIcon color="action" fontSize="small" 
                       style={{ marginLeft: "10px", marginRight:"10px", cursor:"pointer" }}
+                      onClick={this.handleClickChangeStatusOnTick({attendance_id: row.attendance_id, attendance_status: row.status})}
                     />
                     <CancelOutlinedIcon color="disabled" fontSize="small"
                      style={{ marginLeft: "10px", marginRight:"4px", cursor:"pointer" }}
-                     onClick={this.props.handleChange(row.status)}
+                     onClick={this.handleClickChangeStatusOnCross(row.attendance_id, row.status)}
                     />
                   </div>
                 </TableCell>
