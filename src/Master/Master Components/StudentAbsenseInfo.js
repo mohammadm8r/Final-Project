@@ -85,28 +85,25 @@ class StudentAbsenseInfo extends React.Component {
     return selectRow
   }
 
-  handleClickChangeStatusOnTick(selected_row) {
-    function selectRow(){
-      this.setState({ openReq: true, selected_row: selected_row})
-    };
-    selectRow = selectRow.bind(this);
-    // switch(this.state.selected_row.attendance_status){
-    //   case 'حاضر':
-    //     selected_row.attendance_status = 2
-    //     break;
-    //   case 'غایب':
-    //     selected_row.attendance_status = 5
-    //     break;
-    //   default:
-    //     selected_row.attendance_status = 0
-    // }
+  handleClickChangeStatusOnTick(attendance_id, attendance_status) {
+    let attendance_new_status = 0
+    switch(attendance_status){
+      case 'حاضر':
+        attendance_new_status = 2
+        break;
+      case 'غایب':
+        attendance_new_status = 5
+        break;
+      default:
+        attendance_new_status = 0
+    }
     return () => {
-      this.props.handleChange(selected_row.attendance_id, selected_row.attendance_status)
+      console.log({attendance_id})
+      this.props.handleChange(attendance_id, attendance_new_status)
     }
   }
 
   handleClickChangeStatusOnCross(attendance_id, attendance_status) {
-    console.log(attendance_id)
     let attendance_new_status = 0
     switch(attendance_status){
       case 'حاضر':
@@ -119,6 +116,7 @@ class StudentAbsenseInfo extends React.Component {
         attendance_new_status = 0
     }
     return () => {
+      console.log({attendance_id})
       this.props.handleChange(attendance_id, attendance_new_status)
     }
   }
@@ -188,7 +186,7 @@ class StudentAbsenseInfo extends React.Component {
                     {row.status}
                     <CheckCircleOutlineOutlinedIcon color="action" fontSize="small" 
                       style={{ marginLeft: "10px", marginRight:"10px", cursor:"pointer" }}
-                      onClick={this.handleClickChangeStatusOnTick({attendance_id: row.attendance_id, attendance_status: row.status})}
+                      onClick={this.handleClickChangeStatusOnTick(row.attendance_id, row.status)}
                     />
                     <CancelOutlinedIcon color="disabled" fontSize="small"
                      style={{ marginLeft: "10px", marginRight:"4px", cursor:"pointer" }}
@@ -198,7 +196,7 @@ class StudentAbsenseInfo extends React.Component {
                 </TableCell>
 
                 <TableCell className={classes.font} style={{ textAlign: 'center'}}>
-                    <Button style={{ cursor: 'pointer', fontFamily: 'Shabnam' }} onClick={this.handleClickOpenReq({attendance_id: row.attendance_id})}>{row.requests}</Button>
+                    <Button style={{ cursor: 'pointer', fontFamily: 'Shabnam' }} onClick={this.handleClickOpenReq({attendance_id: row.attendance_id, attendance_status: row.status})}>{row.requests}</Button>
                 </TableCell>
 
                 <TableCell className={classes.font} style={{ textAlign: 'center' }}>
@@ -257,8 +255,10 @@ class StudentAbsenseInfo extends React.Component {
         />
         <ShowRequests
           attendance_id={this.state.selected_row.attendance_id}
+          attendance_status={this.state.selected_row.attendance_status}
           openReq={this.state.openReq}
           onClose={this.handleCloseReq}
+          changeRequestFunc={this.props.changeRequestFunc}
         />
       </React.Fragment>
     );

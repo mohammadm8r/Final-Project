@@ -64,11 +64,49 @@ class ShowRequests extends React.Component {
     this.handleClosePhoto = this.handleClosePhoto.bind(this);
     this.handleCloseAvatar = this.handleCloseAvatar.bind(this);
     this.handleCloseTrace = this.handleCloseTrace.bind(this);
+    this.handleClickChangeStatusOnTick = this.handleClickChangeStatusOnTick.bind(this);
+    this.handleClickChangeStatusOnCross = this.handleClickChangeStatusOnCross.bind(this);
 
   }
 
-  createRequestsData(id, reqDate, reqTitle, reqStatus, reqComment) {
-    return { id, reqDate, reqTitle, reqStatus, reqComment };
+  handleClickChangeStatusOnTick(attendance_id, request_type_matn) {
+    let attendance_new_status = 0
+    switch(request_type_matn){
+      case 'درخواست ثبت حضور':
+        attendance_new_status = 3
+        break;
+      case 'درخواست ثبت غیبت':
+        attendance_new_status = 6
+        break;
+      default:
+        attendance_new_status = 0
+    }
+    return () => {
+      console.log({attendance_id})
+      this.props.changeRequestFunc(attendance_id, attendance_new_status, 1)
+    }
+  }
+
+  handleClickChangeStatusOnCross(attendance_id, request_type_matn) {
+    let attendance_new_status = 0
+    switch(request_type_matn){
+      case 'درخواست ثبت حضور':
+        attendance_new_status = 5
+        break;
+      case 'درخواست ثبت غیبت':
+        attendance_new_status = 2
+        break;
+      default:
+        attendance_new_status = 0
+    }
+    return () => {
+      console.log({attendance_id})
+      this.props.changeRequestFunc(attendance_id, attendance_new_status, 2)
+    }
+  }
+
+  createRequestsData(id, reqDate, reqTitle, reqStatus, reqComment, reqType) {
+    return { id, reqDate, reqTitle, reqStatus, reqComment, reqType };
   }
 
   handleClickOpenReq(event) {
@@ -134,11 +172,11 @@ class ShowRequests extends React.Component {
   render() {
     const { classes } = this.props;
     const requestsRows = []
-    console.log(this.state.rows.length)
+    console.log(this.state.rows)
     // console.log(this.state.rows[0].request_type_matn)
     for(var j = 0 ; j < this.state.rows.length; j++){
       requestsRows.push(
-        this.createRequestsData(j, this.state.rows[j].request_date, this.state.rows[j].request_type_matn, this.state.rows[j].request_status_matn, this.state.rows[j].request_comment),
+        this.createRequestsData(j, this.state.rows[j].request_date, this.state.rows[j].request_type_matn, this.state.rows[j].request_status_matn, this.state.rows[j].request_comment, this.state.rows[j].request_type),
       );
     }
     return (
@@ -183,9 +221,11 @@ class ShowRequests extends React.Component {
                     <TableCell className={classes.font} style={{ textAlign: 'center' }}>
                         <CheckCircleOutlineOutlinedIcon color="action" fontSize="small" 
                           style={{ marginLeft: "10px", marginRight:"4px", cursor:"pointer" }}
+                          onClick={this.handleClickChangeStatusOnTick(this.props.attendance_id, row.reqComment)}
                         />
                         <CancelOutlinedIcon color="disabled" fontSize="small" 
                           style={{ marginLeft: "10px", marginRight:"4px", cursor:"pointer" }}
+                          onClick={this.handleClickChangeStatusOnCross(this.props.attendance_id, row.reqComment)}
                         />
                     </TableCell>
                   </TableRow>
