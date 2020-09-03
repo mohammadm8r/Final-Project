@@ -57,7 +57,7 @@ class Dashboard extends React.Component {
 			<div>
 				<CssBaseline />
 				<Header data={this.state}/>
-				<SideBar />
+				{/* <SideBar /> */}
 				<MainPage data={this.state}/>
 			</div>
 		);

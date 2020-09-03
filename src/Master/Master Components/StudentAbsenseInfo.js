@@ -145,7 +145,38 @@ class StudentAbsenseInfo extends React.Component {
     event.preventDefault();
   }
 
+  // componentDidUpdate(prevProps) {
+  //   if(prevProps.data.names.length == this.props.data.names.length)
+  //     return
+  //   for(let i = 0; i < this.props.data.names.length; i++){
+  //     const requestOptions = {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({ "student_id": this.props.data.names[i].student_id }),
+  //     };
+  //       fetch('http://localhost:3030/eachSessionRequestUnread', requestOptions)
+  //       .then(async response => {
+  //         const data = await response.json();
+  //         if (!response.ok) {
+  //           const error = (data && data.message) || response.status;
+  //           return Promise.reject(error);
+  //         }
+  //         console.log(data.count)
+  //         this.setState(
+  //           (prevState) => {
+  //             prevState.numOfAbsense[i] = data.count
+  //             return {numOfAbsense: [...prevState.numOfAbsense]}
+  //           }
+  //         )
+  //       })
+  //       .catch(error => {
+  //         this.setState({ errorMessage: error.toString() });
+  //         console.error('There was an error!', error);
+  //       });
+  //   }
+  // }
   render() {
+    console.log(this.props.data.names)
     const { classes } = this.props;
     const rows = [];
     const requestsRows = [];

@@ -167,8 +167,8 @@ class ShowRequests extends React.Component {
           this.setState({ errorMessage: error.toString() });
           console.error('There was an error!', error);
         });}
-    
   }
+  
   render() {
     const { classes } = this.props;
     const requestsRows = []

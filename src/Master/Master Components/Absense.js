@@ -38,6 +38,9 @@ class Absense extends React.Component {
       openCal: false,
       rows: [],
       requestsNum: Array(this.props.data.names.length),
+      requestsUnreadNum: Array(this.props.data.names.length),
+      numOfAbsense: Array(this.props.data.names.length),
+      classSessionsNum: 0,
     }
 
     this.handleClickOpenReq = this.handleClickOpenReq.bind(this);
@@ -73,8 +76,32 @@ class Absense extends React.Component {
   componentDidUpdate(prevProps) {
     if(prevProps.data.names.length == this.props.data.names.length)
       return
+    
+    const requestOptionsClassSessions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ "cp_id": this.props.data.names[0].cp_id }),
+    };
+    fetch('http://localhost:3030/classSessionsNum', requestOptionsClassSessions)
+      .then(async response => {
+        const data = await response.json();
+        if (!response.ok) {
+          const error = (data && data.message) || response.status;
+          return Promise.reject(error);
+        }
+        console.log(data)
+        this.setState(
+          (prevState) => {
+            prevState.classSessionsNum = data.count
+            return {classSessionsNum: prevState.classSessionsNum}
+          }
+        )
+      })
+      .catch(error => {
+        this.setState({ errorMessage: error.toString() });
+        console.error('There was an error!', error);
+      });
     for(let i = 0; i < this.props.data.names.length; i++){
-      console.log(localStorage.getItem('student_id'))
       const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -99,23 +126,62 @@ class Absense extends React.Component {
           this.setState({ errorMessage: error.toString() });
           console.error('There was an error!', error);
         });
+
+        fetch('http://localhost:3030/requestsUnreadCount', requestOptions)
+          .then(async response => {
+            const data = await response.json();
+            if (!response.ok) {
+              const error = (data && data.message) || response.status;
+              return Promise.reject(error);
+            }
+            console.log(data)
+            this.setState(
+              (prevState) => {
+                prevState.requestsUnreadNum[i] = data.count
+                return {requestsUnreadNum: [...prevState.requestsUnreadNum]}
+              }
+            )
+          })
+          .catch(error => {
+            this.setState({ errorMessage: error.toString() });
+            console.error('There was an error!', error);
+          });
+
+          fetch('http://localhost:3030/absensesNum', requestOptions)
+          .then(async response => {
+            const data = await response.json();
+            if (!response.ok) {
+              const error = (data && data.message) || response.status;
+              return Promise.reject(error);
+            }
+            console.log(data.count)
+            this.setState(
+              (prevState) => {
+                prevState.numOfAbsense[i] = data.count
+                return {numOfAbsense: [...prevState.numOfAbsense]}
+              }
+            )
+          })
+          .catch(error => {
+            this.setState({ errorMessage: error.toString() });
+            console.error('There was an error!', error);
+          });
     }
-    
   }
 
   render() {
-    console.log(this.state.requestsNum)
+    console.log(this.props.data.names)
     const { classes } = this.props;
     var i;
     const rows = []
     for(i = 0; i < this.props.data.names.length; i++){
       rows.push(
-        this.createData(i, this.props.data.names[i].student_name +" "+ this.props.data.names[i].student_family, '2', '-', this.state.requestsNum[i]),
+        this.createData(i, this.props.data.names[i].student_name +" "+ this.props.data.names[i].student_family, this.state.numOfAbsense[i], this.state.requestsUnreadNum[i], this.state.requestsNum[i]),
       );
     }
     return (
       <React.Fragment>
-        <Title style={{ textAlign: 'center', alignItems: 'center' }}>تعداد جلسات برگزار شده: ۱۸</Title>
+        <Title className={classes.NumberFont}>تعداد جلسات برگزار شده: {this.state.classSessionsNum}</Title>
         <Table style={{ height: "200px", maxHeight: "300px"}}>
           <TableHead>
             <TableRow style={{ alignItems: 'center' }}>
