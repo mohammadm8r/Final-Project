@@ -214,12 +214,15 @@ class MainPage extends React.Component {
 				// const maghadir = data.map(l => Object.assign({}, l))
 				// console.log(maghadir)
 				// this.setState({master_details: JSON.stringify(maghadir)})
+				const course_titles = []
+				const course_groups = []
+				const course_days = []
 				for(i in data){
-					this.state.course_titles.push(data[i].course_title)
-					this.state.course_groups.push(data[i].course_group)
-					this.state.course_days.push(data[i].course_days)
+					course_titles.push(data[i].course_title)
+					course_groups.push(data[i].course_group)
+					course_days.push(data[i].course_days)
 				}
-				
+				this.setState({course_titles: course_titles, course_groups: course_groups, course_days: course_days})
 			})
 			.catch(error => {
 				this.setState({ errorMessage: error.toString() });

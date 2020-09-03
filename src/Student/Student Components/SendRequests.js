@@ -98,7 +98,7 @@ class SendRequests extends React.Component {
             maxWidth='sm'
         >
             <DialogContent>
-            <Image src={ClassPhoto} maxWidth='md'/>
+              <Image src={`http://localhost:3030/classSessionsPhotos?course_title=${localStorage.getItem('course_title')}&course_group=${localStorage.getItem('course_group')}&session_id=${this.props.session_id}`} maxWidth='md'/>
             </DialogContent>
             <DialogTitle>
                 <TextField

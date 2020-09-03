@@ -30,6 +30,8 @@ import Moment from 'react-moment';
 import 'moment-timezone';
 import ShowRequests from './ShowRequests'
 import SendRequests from './SendRequests'
+import ShowSessionPhoto from './showClassSessionPhoto'
+import ShowStudentPhoto from './showStudentPhoto'
 // Generate Order Data
 
 const useStyles = theme => ({
@@ -68,8 +70,8 @@ class StudentAbsenseInfo extends React.Component {
     this.handleCloseTrace = this.handleCloseTrace.bind(this);
   }
 
-  createData(id, date, status, requests, classPhoto, StuPhoto, attendance_id) {
-    return { id, date, status, requests, classPhoto, StuPhoto, attendance_id };
+  createData(id, date, status, requests, classPhoto, StuPhoto, attendance_id, session_id) {
+    return { id, date, status, requests, classPhoto, StuPhoto, attendance_id, session_id };
   }
   createRequestsData(id, reqDate, reqTitle, reqStatus) {
     return { id, reqDate, reqTitle, reqStatus };
@@ -83,12 +85,20 @@ class StudentAbsenseInfo extends React.Component {
     return selectRow
   }
 
-  handleClickOpenPhoto(event) {
-    this.setState({ openPhoto: true })
+  handleClickOpenPhoto(selected_row) {
+    function selectRow(){
+      this.setState({ openPhoto: true, selected_row: selected_row})
+    };
+    selectRow = selectRow.bind(this);
+    return selectRow
   }
 
-  handleClickOpenAvatar(event) {
-    this.setState({ openAvatar: true })
+  handleClickOpenAvatar(selected_row) {
+    function selectRow(){
+      this.setState({ openAvatar: true, selected_row: selected_row})
+    };
+    selectRow = selectRow.bind(this);
+    return selectRow
   }
 
   handleClickOpenTraceRequests(selected_row) {
@@ -131,7 +141,7 @@ class StudentAbsenseInfo extends React.Component {
     for(var i = 0 ; i < this.props.data.names.length; i++){
       rows.push(
         this.createData(i, this.props.data.names[i].session_date, this.props.data.names[i].attendance_matn,
-           'ثبت درخواست', 'مشاهده عکس کلاس', 'مشاهده عکس دانشجو', this.props.data.names[i].attendance_id),
+           'ثبت درخواست', 'مشاهده عکس کلاس', 'مشاهده عکس دانشجو', this.props.data.names[i].attendance_id, this.props.data.names[i].session_id),
       );
     }
 
@@ -168,29 +178,14 @@ class StudentAbsenseInfo extends React.Component {
 
                 <TableCell className={classes.font} style={{ textAlign: 'center'}}>
                   <div style={{ display: "flex", flexDirection:"row", alignItems: "center", justifyContent: "center"}}>
-                    <Button style={{ cursor: 'pointer', fontFamily: 'Shabnam' }} onClick={this.handleClickOpenReq({attendance_id: row.attendance_id, class_image: row.class_image})}>{row.requests}</Button>
+                    <Button style={{ cursor: 'pointer', fontFamily: 'Shabnam' }} onClick={this.handleClickOpenReq({attendance_id: row.attendance_id, session_id: row.session_id})}>{row.requests}</Button>
                     <div>|</div>
                     <Button style={{ cursor: 'pointer', fontFamily: 'Shabnam' }} onClick={this.handleClickOpenTraceRequests({attendance_id: row.attendance_id})}>مشاهده درخواست‌ها</Button>
                   </div>
                   </TableCell>
 
                 <TableCell className={classes.font} style={{ textAlign: 'center' }}>
-                  <Image src={ClassPhoto} onClick={this.handleClickOpenPhoto} style={{ cursor: 'pointer'}}/>
-                  <Dialog
-                    open={this.state.openPhoto}
-                    onClose={this.handleClosePhoto}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                  >
-                    <DialogContent style={{width: '500px'}}>
-                      <Image src={ClassPhoto} />
-                    </DialogContent>
-                    <DialogActions>
-                      <Button onClick={this.handleClosePhoto} color="primary" autoFocus style={{ fontFamily: "Shabnam" }}>
-                        بستن
-                      </Button>
-                    </DialogActions>
-                  </Dialog>
+                  <Image src={ClassPhoto} onClick={this.handleClickOpenPhoto({session_id: row.session_id})} style={{ cursor: 'pointer'}}/>
                 </TableCell>
 
                 <TableCell className={classes.font} style={{ textAlign: 'center', justifyContent: 'center'}}>
@@ -198,24 +193,9 @@ class StudentAbsenseInfo extends React.Component {
                     alt="Mohammad Rezaei"
                     src={Profile}
                     className={classes.large}
-                    onClick={this.handleClickOpenAvatar}
+                    onClick={this.handleClickOpenAvatar({session_id: row.session_id, student_id: row.student_id})}
                     style={{ cursor: 'pointer', alignSelf: 'center', justifyContent: 'center', marginRight: '35%'}}
 								  />
-                  <Dialog
-                    open={this.state.openAvatar}
-                    onClose={this.handleCloseAvatar}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                  >
-                    <DialogContent style={{width: '500px'}}>
-                      <Image src={Profile} />
-                    </DialogContent>
-                    <DialogActions>
-                      <Button onClick={this.handleCloseAvatar} color="primary" autoFocus style={{ fontFamily: "Shabnam" }}>
-                        بستن
-                      </Button>
-                    </DialogActions>
-                  </Dialog>
                 </TableCell>
               </TableRow>
             ))}
@@ -224,6 +204,7 @@ class StudentAbsenseInfo extends React.Component {
         </Table>
         <SendRequests
           attendance_id={this.state.selected_row.attendance_id}
+          session_id={this.state.selected_row.session_id}
           image={this.state.selected_row.image}
           open={this.state.openReq}
           onClose={this.handleCloseReq}
@@ -232,6 +213,17 @@ class StudentAbsenseInfo extends React.Component {
           attendance_id={this.state.selected_row.attendance_id}
           open={this.state.openTrace}
           onClose={this.handleCloseTrace}
+        />
+        <ShowSessionPhoto
+          session_id={this.state.selected_row.session_id}
+          openPhoto={this.state.openPhoto}
+          onClose={this.handleClosePhoto}
+        />
+        <ShowStudentPhoto
+          session_id={this.state.selected_row.session_id}
+          student_id={this.state.selected_row.student_id}
+          openAvatar={this.state.openAvatar}
+          onClose={this.handleCloseAvatar}
         />
       </React.Fragment>
     );

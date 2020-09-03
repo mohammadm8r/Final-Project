@@ -29,6 +29,8 @@ import Moment from 'react-moment';
 import 'moment-timezone';
 import Demo from '../../Global Components/calendar'
 import ShowRequests from './ShowRequests'
+import ShowSessionPhoto from './ShowSessionPhoto'
+import ShowStudentPhoto from './showStudentPhoto'
 
 // Generate Order Data
 
@@ -56,6 +58,11 @@ class StudentAbsenseInfo extends React.Component {
       openAvatar: false,
       rows: [],
       selected_row: {},
+      showOnClickTicked: false,
+      showOnClickCrossed: false,
+      selectedTick: {},
+      selectedCross: {},
+      numOfRequests: Array(this.props.data.names.length),
     }
 
     
@@ -70,8 +77,8 @@ class StudentAbsenseInfo extends React.Component {
     this.handleClickChangeStatusOnCross = this.handleClickChangeStatusOnCross.bind(this);
   }
 
-  createData(id, date, status, requests, classPhoto, StuPhoto, attendance_id) {
-    return { id, date, status, requests, classPhoto, StuPhoto, attendance_id };
+  createData(id, date, status, requests, classPhoto, StuPhoto, attendance_id, session_id) {
+    return { id, date, status, requests, classPhoto, StuPhoto, attendance_id, session_id };
   }
   createRequestsData(id, reqDate, reqTitle, reqStatus) {
     return { id, reqDate, reqTitle, reqStatus };
@@ -99,6 +106,7 @@ class StudentAbsenseInfo extends React.Component {
     }
     return () => {
       console.log({attendance_id})
+      this.setState({selectedTick: {attendance_id: attendance_id, showOnClickTicked: !this.state.showOnClickTicked}})
       this.props.handleChange(attendance_id, attendance_new_status)
     }
   }
@@ -117,16 +125,25 @@ class StudentAbsenseInfo extends React.Component {
     }
     return () => {
       console.log({attendance_id})
+      this.setState({selectedCross: {attendance_id: attendance_id, showOnClickCrossed: !this.state.showOnClickCrossed}})
       this.props.handleChange(attendance_id, attendance_new_status)
     }
   }
 
-  handleClickOpenPhoto(event) {
-    this.setState({ openPhoto: true })
+  handleClickOpenPhoto(selected_row) {
+    function selectRow(){
+      this.setState({ openPhoto: true, selected_row: selected_row})
+    };
+    selectRow = selectRow.bind(this);
+    return selectRow
   }
 
-  handleClickOpenAvatar(event) {
-    this.setState({ openAvatar: true })
+  handleClickOpenAvatar(selected_row) {
+    function selectRow(){
+      this.setState({ openAvatar: true, selected_row: selected_row})
+    };
+    selectRow = selectRow.bind(this);
+    return selectRow
   }
   
   handleCloseReq(event) {
@@ -145,45 +162,45 @@ class StudentAbsenseInfo extends React.Component {
     event.preventDefault();
   }
 
-  // componentDidUpdate(prevProps) {
-  //   if(prevProps.data.names.length == this.props.data.names.length)
-  //     return
-  //   for(let i = 0; i < this.props.data.names.length; i++){
-  //     const requestOptions = {
-  //       method: 'POST',
-  //       headers: { 'Content-Type': 'application/json' },
-  //       body: JSON.stringify({ "student_id": this.props.data.names[i].student_id }),
-  //     };
-  //       fetch('http://localhost:3030/eachSessionRequestUnread', requestOptions)
-  //       .then(async response => {
-  //         const data = await response.json();
-  //         if (!response.ok) {
-  //           const error = (data && data.message) || response.status;
-  //           return Promise.reject(error);
-  //         }
-  //         console.log(data.count)
-  //         this.setState(
-  //           (prevState) => {
-  //             prevState.numOfAbsense[i] = data.count
-  //             return {numOfAbsense: [...prevState.numOfAbsense]}
-  //           }
-  //         )
-  //       })
-  //       .catch(error => {
-  //         this.setState({ errorMessage: error.toString() });
-  //         console.error('There was an error!', error);
-  //       });
-  //   }
-  // }
+  componentDidUpdate(prevProps) {
+    if(prevProps.data.names.length == this.props.data.names.length)
+      return
+    for(let i = 0; i < this.props.data.names.length; i++){
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ "attendance_id": this.props.data.names[i].attendance_id }),
+      };
+        fetch('http://localhost:3030/eachSessionRequestUnread', requestOptions)
+        .then(async response => {
+          const data = await response.json();
+          if (!response.ok) {
+            const error = (data && data.message) || response.status;
+            return Promise.reject(error);
+          }
+          console.log(data.count)
+          this.setState(
+            (prevState) => {
+              prevState.numOfRequests[i] = data.count
+              return {numOfRequests: [...prevState.numOfRequests]}
+            }
+          )
+        })
+        .catch(error => {
+          this.setState({ errorMessage: error.toString() });
+          console.error('There was an error!', error);
+        });
+    }
+  }
   render() {
-    console.log(this.props.data.names)
     const { classes } = this.props;
     const rows = [];
     const requestsRows = [];
+    console.log(this.props.data.names)
 
     for(var i = 0 ; i < this.props.data.names.length; i++){
       rows.push(
-        this.createData(i, this.props.data.names[i].session_date, this.props.data.names[i].attendance_matn, 'یک درخواست بی‌پاسخ', 'مشاهده عکس کلاس', 'مشاهده عکس دانشجو', this.props.data.names[i].attendance_id),
+        this.createData(i, this.props.data.names[i].session_date, this.props.data.names[i].attendance_matn, this.state.numOfRequests[i]+' '+'درخواست بی‌پاسخ', 'مشاهده عکس کلاس', 'مشاهده عکس دانشجو', this.props.data.names[i].attendance_id, this.props.data.names[i].session_id),
       );
     }
 
@@ -215,38 +232,29 @@ class StudentAbsenseInfo extends React.Component {
                 <TableCell className={classes.font} style={{ textAlign: 'center' }}>
                   <div style={{ display: "flex", flexDirection:"row", alignItems: "center", justifyContent: "center"}}>
                     {row.status}
-                    <CheckCircleOutlineOutlinedIcon color="action" fontSize="small" 
-                      style={{ marginLeft: "10px", marginRight:"10px", cursor:"pointer" }}
-                      onClick={this.handleClickChangeStatusOnTick(row.attendance_id, row.status)}
-                    />
-                    <CancelOutlinedIcon color="disabled" fontSize="small"
-                     style={{ marginLeft: "10px", marginRight:"4px", cursor:"pointer" }}
-                     onClick={this.handleClickChangeStatusOnCross(row.attendance_id, row.status)}
-                    />
+                    <btn onClick={this.handleClickChangeStatusOnTick(row.attendance_id, row.status)}>
+                      {
+                        (this.state.selectedTick.attendance_id == row.attendance_id && this.state.selectedTick.showOnClickTicked)
+                        ? <CheckCircleIcon color="action" fontSize="small" style={{ marginLeft: "10px", marginRight:"10px", cursor:"pointer" }} />
+                        : <CheckCircleOutlineOutlinedIcon color="action" fontSize="small" style={{ marginLeft: "10px", marginRight:"10px", cursor:"pointer" }}/>
+                      }
+                    </btn>
+                    <btn id="cancleButton" onClick={this.handleClickChangeStatusOnCross(row.attendance_id, row.status)}>
+                      {
+                        (this.state.selectedCross.attendance_id == row.attendance_id && this.state.selectedCross.showOnClickCrossed)
+                        ? <CancelIcon color="action" fontSize="small" style={{ marginLeft: "10px", marginRight:"10px", cursor:"pointer" }} />
+                        : <CancelOutlinedIcon color="disabled" fontSize="small" style={{ marginLeft: "10px", marginRight:"4px", cursor:"pointer" }} />
+                      }
+                    </btn>
                   </div>
                 </TableCell>
 
-                <TableCell className={classes.font} style={{ textAlign: 'center'}}>
+                <TableCell className={classes.NumberFont} style={{ textAlign: 'center'}}>
                     <Button style={{ cursor: 'pointer', fontFamily: 'Shabnam' }} onClick={this.handleClickOpenReq({attendance_id: row.attendance_id, attendance_status: row.status})}>{row.requests}</Button>
                 </TableCell>
 
                 <TableCell className={classes.font} style={{ textAlign: 'center' }}>
-                  <Image src={ClassPhoto} onClick={this.handleClickOpenPhoto} style={{ cursor: 'pointer'}}/>
-                  <Dialog
-                    open={this.state.openPhoto}
-                    onClose={this.handleClosePhoto}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                  >
-                    <DialogContent style={{width: '500px'}}>
-                      <Image src={ClassPhoto} />
-                    </DialogContent>
-                    <DialogActions>
-                      <Button onClick={this.handleClosePhoto} color="primary" autoFocus style={{ fontFamily: "Shabnam" }}>
-                        بستن
-                      </Button>
-                    </DialogActions>
-                  </Dialog>
+                  <Image src={ClassPhoto} onClick={this.handleClickOpenPhoto({session_id: row.session_id})} style={{ cursor: 'pointer'}}/>
                 </TableCell>
 
                 <TableCell className={classes.font} style={{ textAlign: 'center', justifyContent: 'center'}}>
@@ -254,24 +262,9 @@ class StudentAbsenseInfo extends React.Component {
                     alt="Mohammad Rezaei"
                     src={Profile}
                     className={classes.large}
-                    onClick={this.handleClickOpenAvatar}
+                    onClick={this.handleClickOpenAvatar({session_id: row.session_id, student_id: row.student_id})}
                     style={{ cursor: 'pointer', alignSelf: 'center', justifyContent: 'center', marginRight: '35%'}}
 								  />
-                  <Dialog
-                    open={this.state.openAvatar}
-                    onClose={this.handleCloseAvatar}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                  >
-                    <DialogContent style={{width: '500px'}}>
-                      <Image src={Profile} />
-                    </DialogContent>
-                    <DialogActions>
-                      <Button onClick={this.handleCloseAvatar} color="primary" autoFocus style={{ fontFamily: "Shabnam" }}>
-                        بستن
-                      </Button>
-                    </DialogActions>
-                  </Dialog>
                 </TableCell>
               </TableRow>
             ))}
@@ -290,6 +283,17 @@ class StudentAbsenseInfo extends React.Component {
           openReq={this.state.openReq}
           onClose={this.handleCloseReq}
           changeRequestFunc={this.props.changeRequestFunc}
+        />
+        <ShowSessionPhoto
+          session_id={this.state.selected_row.session_id}
+          openPhoto={this.state.openPhoto}
+          onClose={this.handleClosePhoto}
+        />
+        <ShowStudentPhoto
+          session_id={this.state.selected_row.session_id}
+          student_id={this.state.selected_row.student_id}
+          openAvatar={this.state.openAvatar}
+          onClose={this.handleCloseAvatar}
         />
       </React.Fragment>
     );

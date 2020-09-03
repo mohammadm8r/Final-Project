@@ -71,17 +71,18 @@ class ShowRequests extends React.Component {
 
   handleClickChangeStatusOnTick(attendance_id, request_type_matn) {
     let attendance_new_status = 0
-    switch(request_type_matn){
-      case 'درخواست ثبت حضور':
-        attendance_new_status = 3
-        break;
-      case 'درخواست ثبت غیبت':
-        attendance_new_status = 6
-        break;
-      default:
-        attendance_new_status = 0
-    }
     return () => {
+      console.log(request_type_matn)
+      switch(request_type_matn){
+        case 'درخواست ثبت حضور':
+          attendance_new_status = 3
+          break;
+        case 'درخواست ثبت غیبت':
+          attendance_new_status = 6
+          break;
+        default:
+          attendance_new_status = 0
+      }
       console.log({attendance_id})
       this.props.changeRequestFunc(attendance_id, attendance_new_status, 1)
     }
@@ -168,7 +169,7 @@ class ShowRequests extends React.Component {
           console.error('There was an error!', error);
         });}
   }
-  
+
   render() {
     const { classes } = this.props;
     const requestsRows = []
@@ -221,11 +222,11 @@ class ShowRequests extends React.Component {
                     <TableCell className={classes.font} style={{ textAlign: 'center' }}>
                         <CheckCircleOutlineOutlinedIcon color="action" fontSize="small" 
                           style={{ marginLeft: "10px", marginRight:"4px", cursor:"pointer" }}
-                          onClick={this.handleClickChangeStatusOnTick(this.props.attendance_id, row.reqComment)}
+                          onClick={this.handleClickChangeStatusOnTick(this.props.attendance_id, row.reqTitle)}
                         />
                         <CancelOutlinedIcon color="disabled" fontSize="small" 
                           style={{ marginLeft: "10px", marginRight:"4px", cursor:"pointer" }}
-                          onClick={this.handleClickChangeStatusOnCross(this.props.attendance_id, row.reqComment)}
+                          onClick={this.handleClickChangeStatusOnCross(this.props.attendance_id, row.reqTitle)}
                         />
                     </TableCell>
                   </TableRow>

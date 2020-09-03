@@ -116,7 +116,8 @@ class StudentDetails extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-          names: []
+          names: [],
+          showOnClickTicked: false,
         }
         if(this.props.location.data){
           localStorage.setItem('student_name', this.props.location.data)
@@ -248,7 +249,7 @@ class StudentDetails extends React.Component {
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
                     <Paper className={classes.paper}>
-                      <StudentAbsenseInfo handleChange={this.changeStatus} changeRequestFunc={this.changeRequest} data={this.state}/>
+                      <StudentAbsenseInfo showOnClickTicked={this.state.showOnClickTicked} handleChange={this.changeStatus} changeRequestFunc={this.changeRequest} data={this.state}/>
                     </Paper>
                   </Grid>
                 </Grid>
