@@ -26,7 +26,7 @@
     "react-persian": "latest",
     "react-resizable": "^1.10.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "^3.4.3"
+    "react-scripts": "^5.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
